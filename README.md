@@ -26,7 +26,7 @@ localhost/tunemaps/web/config.php
 Follow the steps there and enter information such as your database login and password.
 
 ### Database creation
-From the command line run the following commands from the tunemaps directory to create the database and schema:
+Using the command line run the following commands from the tunemaps directory to create the database and schema:
 ```
 php app/console doctrine:database:create
 php app/console doctrine:schema:update --force
