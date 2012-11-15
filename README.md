@@ -2,7 +2,7 @@
 TuneMaps is a music recommender system that uses geographical data to predict musical tastes and trends.
 
 ## Requirements
-This project requires a working web server with PHP and MySQL.
+This project requires a working Apache web server with PHP and MySQL.
 
 ## Installation
 This project is built using the symfony framework. Installation requires several steps:
