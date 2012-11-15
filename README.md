@@ -5,7 +5,7 @@ TuneMaps is a music recommender system that uses geographical data to predict mu
 This project requires a working web server with PHP and MySQL.
 
 ## Installation
-This project is built using the symfony framework. Installation requires several step:
+This project is built using the symfony framework. Installation requires several steps:
 
 ### Placement
 The project files should be placed in a directory on your webserver. The project's /web folder is considered the "root" and is where the application starts and runs. Say you have the following structure after checking out the GIT repository:
@@ -34,5 +34,6 @@ php app/console doctrine:schema:update --force
 
 ### Done
 You can now use the application by visiting
-	[server URL]/tunemaps/web/
-
+```
+[server URL]/tunemaps/web/
+```
