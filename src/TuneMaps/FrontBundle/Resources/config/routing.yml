@@ -1,0 +1,3 @@
+tune_maps_front_homepage:
+    pattern:  /
+    defaults: { _controller: TuneMapsFrontBundle:Page:index }

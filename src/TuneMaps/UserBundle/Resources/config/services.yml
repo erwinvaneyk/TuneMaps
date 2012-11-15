@@ -1,0 +1,7 @@
+parameters:
+#    tune_maps_front.example.class: TuneMaps\FrontBundle\Example
+
+services:
+#    tune_maps_front.example:
+#        class: %tune_maps_front.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
