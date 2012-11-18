@@ -17,6 +17,12 @@ Then your URL will be:
 [server URL]/tunemaps/web/...
 ```
 
+### Installing Vendor Scripts
+The project requires basic symfony vendor scripts. To install these run the following command in the TuneMaps directory:
+```
+php composer.phar install
+```
+
 ### Configuration
 You first need to configure the project so it knows your database information. For security reasons this has to be done from the localhost:
 ```
