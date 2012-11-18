@@ -22,7 +22,7 @@ Go to the following directory
 ```
 app/config/
 ```
-And rename the "parameters.yml.dist" file to "parameters.yml"
+And copy+paste the "parameters.yml.dist" file. Rename it to "parameters.yml".
 
 ### Installing Vendor Scripts
 The project requires basic symfony vendor scripts. To install these run the following command in the TuneMaps directory:
@@ -35,8 +35,7 @@ You first need to configure the project so it knows your database information. F
 ```
 http://localhost/tunemaps/web/config.php
 ```
-
-Follow the steps there and enter information such as your database login and password.
+Click on 'Configure your Symfony Application online' and follow the steps there.
 
 ### Database creation
 Using the command line run the following commands from the tunemaps directory to create the database and schema:
