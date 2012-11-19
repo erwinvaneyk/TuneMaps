@@ -1,0 +1,51 @@
+{% extends 'TuneMapsFrontBundle::base.html.twig' %}
+
+{% block stylesheets %}
+{% stylesheets
+    '@TuneMapsFrontBundle/resources/public/css/main.css'
+	output='css/compiled/main.css'
+%}
+<link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+{% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>var map;function initialize() {var mapOptions = {zoom: 10,center: new google.maps.LatLng(52.008238, 4.365864),mapTypeId: google.maps.MapTypeId.TERRAIN,streetViewControl: false }; map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions); } google.maps.event.addDomListener(window, 'load', initialize);</script>
+{% javascripts 
+	'@TuneMapsFrontBundle/resources/public/js/main.js'
+	output='js/compiled/main.js'
+%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+{% include 'TuneMapsFrontBundle:Main:header.html.twig' %}
+{% include 'TuneMapsFrontBundle:Main:map.html.twig' %}
+<div id="container">
+{% block container %}
+<div id="content">
+<div id="newsstream">
+<h1>What's happening?</h1>
+</div>
+<div id="recommend">
+<h2>Recommended songs</h2>
+<ul>
+<li><img src="http://gratismuziek.eu/wp-content/uploads/2012/10/robbie-williams-candy-100x100.jpg" alt="Album Cover" />
+<span class="title">Candy</span>
+<span class="artist">By <a href="">Robbie Williams</a></span>
+<ul><li>Rock</li><li>Test</li></ul>
+</li>
+<li><img src="http://images.pricerunner.com/product/100x100/332940604/Fun.-Some-Nights.jpg" alt="Album Cover" />
+<span class="title">Some Nights</span>
+<span class="artist">By <a href="">Fun.</a></span>
+<ul><li>Alternative Rock</li></ul>
+</li>
+</ul>
+</div>
+</div>
+{% endblock %}
+</div>
+{% endblock %}

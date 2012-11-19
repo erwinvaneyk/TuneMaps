@@ -8,7 +8,7 @@ security:
         FOS\UserBundle\Model\UserInterface: sha512
 
     firewalls:
-        main:
+        home:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
@@ -21,6 +21,7 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/main, role: [ROLE_USER] }
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

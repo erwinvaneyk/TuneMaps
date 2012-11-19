@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -26,7 +26,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ "TuneMapsFrontBundle", "TuneMapsUserBundle", "FOSUserBundle" ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -61,5 +61,5 @@ swiftmailer:
 # app/config/config.yml
 fos_user:
     db_driver: orm
-    firewall_name: main
+    firewall_name: home
     user_class: TuneMaps\UserBundle\Entity\User

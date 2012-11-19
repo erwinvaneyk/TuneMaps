@@ -1,0 +1,15 @@
+{% extends 'TuneMapsFrontBundle::base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+{% stylesheets
+    '@TuneMapsUserBundle/resources/public/css/form.css'
+	output='css/compiled/form.css'
+%}
+<link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+{% endstylesheets %}
+{% endblock %}
+{% block body %}
+<div id="form">
+{{ block('fos_user_content') }}
+</div>
+{% endblock %}

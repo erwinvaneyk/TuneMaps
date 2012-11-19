@@ -1,0 +1,12 @@
+<div id="header">
+	<div id="header_content">
+		<div id="logo">
+			<a href="index.htm">{% image '@TuneMapsFrontBundle/resources/public/images/logo.png' output='/images/logo.png' %}
+			<img src="{{ asset_url }}" alt="Logo"/>
+			{% endimage %}</a>
+		</div>
+		<ul>
+			<li class="button">{{ app.user.username }}</li>
+		</ul>
+	</div>
+</div>
