@@ -1,4 +1,24 @@
 {% extends 'TuneMapsFrontBundle::base.html.twig' %}
+
+{% block stylesheets %}
+<link href="../bundles/tunemapsfront/css/start.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
 {% block body %}
-<h1>TuneMaps - Home page</h1>
+
+<div id="logo">
+	{% image '@TuneMapsFrontBundle/resources/public/images/logo-big.png' output='/images/logo-big.png' %}<img src="{{ asset_url }}" alt="TuneMaps"/>{% endimage %}
+</div>
+
+<div id="facebook">
+	{% image '@TuneMapsFrontBundle/resources/public/images/fb_logo.png' output='/images/logo-fb.png' %}<img src="{{ asset_url }}" alt="FB"/>{% endimage %}
+	<a href="{{ path('fos_user_security_login') }}"><span class="text">Login with Facebook</span></a>
+</div>
+
+<div id="bottom">
+<ul>
+	<li>Features</li>
+	<li>How it works</li>
+	<li>Sign up now</li>
+</div>
 {% endblock %}
