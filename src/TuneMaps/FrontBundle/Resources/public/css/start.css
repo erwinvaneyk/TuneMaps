@@ -75,3 +75,8 @@ body{
 #facebook .text{
 	margin-left: 35px;
 }
+
+#facebook a {
+	color: #fff;
+	text-decoration: none;
+}

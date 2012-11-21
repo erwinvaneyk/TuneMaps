@@ -1,7 +1,7 @@
 {% extends 'TuneMapsFrontBundle::base.html.twig' %}
 {% block stylesheets %}
 {{ parent() }}
-<link href="../bundles/tunemapsuser/css/form.css" rel="stylesheet" type="text/css" />
+<link href="{{ asset('bundles/tunemapsuser/css/form.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 {% block body %}
 <div id="form">
