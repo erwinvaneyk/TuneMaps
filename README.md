@@ -47,5 +47,5 @@ php app/console doctrine:schema:update --force
 ### Done
 You can now use the application by visiting
 ```
-http://[server URL]/tunemaps/web/
+http://[server URL]/tunemaps/web/app.php/
 ```
