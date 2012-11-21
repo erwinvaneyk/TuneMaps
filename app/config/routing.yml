@@ -1,6 +1,5 @@
 tune_maps_front:
     resource: "@TuneMapsFrontBundle/Resources/config/routing.yml"
-    prefix:   /
 
 # Internal routing configuration to handle ESI
 #_internal:
