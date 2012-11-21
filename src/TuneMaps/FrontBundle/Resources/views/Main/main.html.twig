@@ -20,21 +20,7 @@
 <div id="newsstream">
 <h1>What's happening?</h1>
 </div>
-<div id="recommend">
-<h2>Recommended songs</h2>
-<ul>
-<li><img src="http://gratismuziek.eu/wp-content/uploads/2012/10/robbie-williams-candy-100x100.jpg" alt="Album Cover" />
-<span class="title">Candy</span>
-<span class="artist">By <a href="">Robbie Williams</a></span>
-<ul><li>Rock</li><li>Test</li></ul>
-</li>
-<li><img src="http://images.pricerunner.com/product/100x100/332940604/Fun.-Some-Nights.jpg" alt="Album Cover" />
-<span class="title">Some Nights</span>
-<span class="artist">By <a href="">Fun.</a></span>
-<ul><li>Alternative Rock</li></ul>
-</li>
-</ul>
-</div>
+{% include 'TuneMapsFrontBundle:Main:recommendations.html.twig' %}
 </div>
 {% endblock %}
 </div>
