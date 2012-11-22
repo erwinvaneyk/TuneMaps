@@ -18,7 +18,7 @@ $youtubeURI = $crawler->getYoutubeUri($lastFmUrl);
 if(!$youtubeURI) {
 	echo "No track found!<br />";
 } else {
-	echo "Loaded: " . $_GET["track"] . " - " . $_GET["artist"] . "<br />";
+	echo "Loaded: " . $track . " - " . $artist . "<br />";
 }
 ?>
 <!DOCTYPE html>
@@ -83,6 +83,11 @@ if(!$youtubeURI) {
 	<input type="button" value="Pause" onclick="player.pauseTrack()" />
 	<input type="button" value="Start" onclick="player.playTrack()" /><br />
 	<input type="button" value="Next" onclick="player.loadVideoById('oABEGc8Dus0')" /><br />
+	<form action="" method="get">
+		Track: <input type="text" name="track" /><br />
+		Artist: <input type="text" name="artist" /><br />
+		<input type="submit" value="listen" />
+	</form>
 	<div id="info"></div>
 	<div id="footerContainer">
 		<div id="topfooter">Video</div>
