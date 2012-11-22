@@ -8,8 +8,8 @@ document.write("<script src=\"http://www.youtube.com/iframe_api\"></script>");
 function Player(id,element) { 
 
     var iPlayer = new YT.Player(element, {
-        height: '200',
-        width: '200',
+        height: '0',
+        width: '0',
         videoId: id,
         playerVars: { 'autoplay': 1, 'controls':0, 'showinfo':0 },
         events: {

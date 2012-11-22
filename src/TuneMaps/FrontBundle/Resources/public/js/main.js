@@ -1,13 +1,12 @@
 $(document).ready(function() {
-
 	//set container dimensions
 	setContainerDimensions();
 	
 	//music player
 	function tick(){
-		$('#player li:first').animate({'opacity':0}, 200, function () { $(this).appendTo($('#player ul')).css('opacity', 1); });
+		$('#player li:first').animate({'opacity':0}, 200, function () {$(this).appendTo($('#player ul')).css('opacity', 1);});
 	}
-	setInterval(function(){ tick () }, 4000);
+	setInterval(function(){tick ()}, 4000);
 	
 	//handle search action
 	$('.search form').submit(function(){ 
@@ -15,7 +14,30 @@ $(document).ready(function() {
 		return false; 
 	});
 	
+        $('#button_play').click(function(event) {
+            console.log('play/pause button!: ' + player.getPlayerState());
+            if(player.getPlayerState() == 1) {
+                player.pauseTrack();
+                $(this).text('play');
+            } else {
+                player.playTrack();
+                $(this).text('pause');
+            }
+        });
+        
+        $('#button_next').click(function() {
+            player.nextVideo();
+        });
+        
+        $('#button_previous').click(function() {
+            player.previousVideo();
+        });
+        console.log('loaded');
 });
+
+function onYouTubeIframeAPIReady() {
+    player = new Player('','player');
+}
 
 //if window is resized then reset dimensions
 $(window).resize(setContainerDimensions);
@@ -38,13 +60,23 @@ function getSearchResults(){
 	 * show spinner while loading
 	 * do not allow users to send request twice
 	 */
-	
+        
 	//display results
 	animatedShow('#menu ul', 'label searchres', 'Search results', 1);
-	if ($('#searchbar').val() == '')
+	if ($('#searchbar').val() == '') {
 		animatedShow('#menu ul', 'track', 'No results', 1);
-	else
-		animatedShow('#menu ul', 'track', '<a href="">Some Nights by Fun . <img src="http://images.pricerunner.com/product/100x100/332940604/Fun.-Some-Nights.jpg" /></a>', 3);
+        } else {
+            animatedShow('#menu ul', 'track', '<a href="">Some Nights by Fun . <img src="http://images.pricerunner.com/product/100x100/332940604/Fun.-Some-Nights.jpg" /></a>', 3);
+            var track = $('#searchbar').val();
+            var url = 'player/' + track;
+            $.ajax({
+                url: url, //url
+                success: function (response) {
+                    console.log("loaded video into player")
+                    player.loadVideoById(response)
+                }
+            });
+        }
 }
 
 function animatedShow(element, classtype, text, n){
