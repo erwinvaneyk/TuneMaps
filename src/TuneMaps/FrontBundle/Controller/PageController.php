@@ -15,4 +15,9 @@ class PageController extends Controller
 	{
 		return $this->render('TuneMapsFrontBundle:Main:main.html.twig', array());
 	}
+	
+	public function mapAction()
+	{
+		return $this->render('TuneMapsFrontBundle:Main:map.html.twig', array());
+	}
 }

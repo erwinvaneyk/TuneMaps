@@ -3,5 +3,5 @@ tune_maps_front_homepage:
     defaults: { _controller: TuneMapsFrontBundle:Page:home }
 
 tune_maps_front_mainpage:
-    pattern:  /main
-    defaults: { _controller: TuneMapsFrontBundle:Page:main }
+    pattern:  /map
+    defaults: { _controller: TuneMapsFrontBundle:Page:map }

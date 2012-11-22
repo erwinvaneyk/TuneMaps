@@ -14,7 +14,7 @@ security:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
                 always_use_default_target_path: true
-                default_target_path:            /main
+                default_target_path:            /map
             logout:    true
             anonymous: true
 
@@ -23,7 +23,7 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/main, role: [ROLE_USER] }
+        - { path: ^/map, role: [ROLE_USER] }
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
