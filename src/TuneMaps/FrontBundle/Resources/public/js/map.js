@@ -4,8 +4,8 @@ function initialize(lat, lon) {
 
 	var userLocation = new google.maps.LatLng(lat, lon);
 
-	/* custom map */
-	var stylez = [
+	//custom map style
+	var mapStyle = [
 	  {
 		"featureType": "road",
 		"stylers": [
@@ -25,21 +25,16 @@ function initialize(lat, lon) {
 	  } 
 	];
 	
+	//initialize map
 	var mapOptions = {
 	  zoom: 10,
 	  center: userLocation,
-	  //mapTypeId: google.maps.MapTypeId.TERRAIN,
+	  mapTypeId: 'styledMap',
 	  streetViewControl: false,
 	   disableDefaultUI: true
 	};
 	map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-	
-	 var styledMapOptions = {
-	 map: map,
-	 name: "tips4phpHip-Hop"
-	 }
-
-	 var testmap =  new google.maps.StyledMapType(stylez,styledMapOptions);
+	map.mapTypes.set('styledMap', new google.maps.StyledMapType(mapStyle,{ map: map }));
 
 	//show users location on the map
 	var marker = new google.maps.Marker({
@@ -47,9 +42,6 @@ function initialize(lat, lon) {
 	  map: map,
 	  title:"You"
 	});
-	 
-	 map.mapTypes.set('tips4php', testmap);
-	 map.setMapTypeId('tips4php');
 	
 }
 
