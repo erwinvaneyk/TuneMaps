@@ -4,14 +4,42 @@ function initialize(lat, lon) {
 
 	var userLocation = new google.maps.LatLng(lat, lon);
 
+	/* custom map */
+	var stylez = [
+	  {
+		"featureType": "road",
+		"stylers": [
+		  { "visibility": "off" }
+		]
+	  },{
+		"featureType": "administrative",
+		"stylers": [
+		  { "visibility": "on" },
+		  { "weight": 0.5 },
+		  { "gamma": 1.8 }
+		]
+	  },{
+		"stylers": [
+		  { "saturation": 13 }
+		]
+	  } 
+	];
+	
 	var mapOptions = {
-	  zoom: 12,
+	  zoom: 10,
 	  center: userLocation,
-	  mapTypeId: google.maps.MapTypeId.TERRAIN,
+	  //mapTypeId: google.maps.MapTypeId.TERRAIN,
 	  streetViewControl: false,
 	   disableDefaultUI: true
 	};
 	map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+	
+	 var styledMapOptions = {
+	 map: map,
+	 name: "tips4phpHip-Hop"
+	 }
+
+	 var testmap =  new google.maps.StyledMapType(stylez,styledMapOptions);
 
 	//show users location on the map
 	var marker = new google.maps.Marker({
@@ -19,6 +47,9 @@ function initialize(lat, lon) {
 	  map: map,
 	  title:"You"
 	});
+	 
+	 map.mapTypes.set('tips4php', testmap);
+	 map.setMapTypeId('tips4php');
 	
 }
 
