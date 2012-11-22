@@ -5,3 +5,7 @@ tune_maps_player_artist:
 tune_maps_player_track:
     pattern:  /player/{track}
     defaults: { _controller: TuneMapsPlayerBundle:Player:track }
+    
+tune_maps_player_tracks:
+    pattern: /tracks/{track}
+    defaults: {_controller: TuneMapsPlayerBundle:Player:tracks }

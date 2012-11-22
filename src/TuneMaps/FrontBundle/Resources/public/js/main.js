@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	//set container dimensions
 	setContainerDimensions();
+        tracks = {};
+        track = null;
 	
 	//music player
 	function tick(){
@@ -63,21 +65,44 @@ function getSearchResults(){
         
 	//display results
 	animatedShow('#menu ul', 'label searchres', 'Search results', 1);
-	if ($('#searchbar').val() == '') {
-		animatedShow('#menu ul', 'track', 'No results', 1);
-        } else {
-            animatedShow('#menu ul', 'track', '<a href="">Some Nights by Fun . <img src="http://images.pricerunner.com/product/100x100/332940604/Fun.-Some-Nights.jpg" /></a>', 3);
-            var track = $('#searchbar').val();
-            var url = 'player/' + track;
+        var track = $('#searchbar').val();
+	if (track != '') {
             $.ajax({
-                url: url, //url
+                url: 'tracks/' + track, //url
                 success: function (response) {
-                    console.log("loaded video into player")
-                    player.loadVideoById(response)
+                    if(response != '') {
+                        tracks = jQuery.parseJSON(response.replace(/&quot;/ig,'"'));   
+                        if(!(tracks.track instanceof Array))
+                            tracks.track = new Array(tracks.track);
+                        
+                        for(var i = 0; i < Math.min(5,tracks.track.length); i += 1) {
+                            animatedShow('#menu ul', 'track','<a class="test" href="javascript:void(0);" onClick="ajaxLoadVideo(tracks.track[' + i +  '].name,tracks.track[' + i + '].artist);">' + tracks.track[i].name + " by "+ tracks.track[i].artist + '</a>',1);
+                        }
+                    } else {
+                        animatedShow('#menu ul', 'track', 'No results', 1);
+                    }
                 }
             });
+        } else {
+            animatedShow('#menu ul', 'track', 'No results', 1);
         }
 }
+
+
+function ajaxLoadVideo(track,artist) {
+    var url = 'player/' + track;
+    if(artist != '') {
+        url = url + '/' + artist;
+    }
+    $.ajax({
+        url: url, //url
+        success: function (response) {
+            //console.log("loaded video into player: " + response)
+            player.loadVideoById(response)
+        }
+    });
+}
+
 
 function animatedShow(element, classtype, text, n){
 	var newItem = $('<li class="' + classtype + '">' + text + '</li>').hide();

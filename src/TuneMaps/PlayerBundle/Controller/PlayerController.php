@@ -9,22 +9,26 @@ class PlayerController extends Controller
 {
     public function artistAction(Request $request, $track, $artist)
     {
-		return $this-renderPlayer($track, $artist);
+            return $this->renderPlayer($track,$artist);
     }
 	
-	public function trackAction(Request $request, $track)
-	{
-		return $this->renderPlayer($track);
-	}
-	
-	private function renderPlayer($track, $artist = '') {
-		$crawler = new CrawlLastFm();
-		$LastFmUrl = $crawler->searchTrack($track, $artist);
-		$youtubeURI = $crawler->getYoutubeUri($LastFmUrl);
-		
-		return $this->render('TuneMapsPlayerBundle::player.html.twig', array('artist' => $artist, 'track' => $track, 'youtube' => $youtubeURI));
-	}
-	
+    public function trackAction(Request $request, $track)
+    {
+            return $this->renderPlayer($track);
+    }
+
+    public function tracksAction(Request $request, $track) {
+            $crawler = new CrawlLastFm();
+            $tracks = $crawler->searchTrack($track);
+            return $this->render('TuneMapsPlayerBundle::player.html.twig', array('content' => json_encode($tracks)));
+    }
+
+    private function renderPlayer($track, $artist = '') {
+            $crawler = new CrawlLastFm();
+            $LastFmUrl = $crawler->getBestTrack($crawler->searchTrack($track, $artist));
+            $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
+            return $this->render('TuneMapsPlayerBundle::player.html.twig', array('content' => $youtubeURI));
+    }
 }
 
 class CrawlLastFm {
@@ -91,14 +95,20 @@ class CrawlLastFm {
 			echo 'nothing found';
 			return false;
 		} else {
-			if(is_array($tracks->{'track'})) {
-				#loop door results op zoek naar streams;
-				return $tracks->{'track'}[0]->{'url'};
-			} else {
-				return $tracks->{'track'}->{'url'};
-			}
+			return $tracks;
 		}
 	}
+        
+        public function getBestTrack($tracks) {
+            if(is_string($tracks)) {
+                return false;
+            } elseif(is_array($tracks->{'track'})) {
+                #loop door results op zoek naar streams;
+                return $tracks->{'track'}[0];
+            } else {
+                return $tracks->{'track'};
+            }
+        }
 	
 	
 	
