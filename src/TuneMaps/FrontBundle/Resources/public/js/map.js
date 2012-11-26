@@ -27,7 +27,7 @@ function initialize(lat, lon) {
 	
 	//initialize map
 	var mapOptions = {
-	  zoom: 13,
+	  zoom: 9,
 	  center: location,
 	  mapTypeId: 'styledMap',
 	  streetViewControl: false,
@@ -66,15 +66,17 @@ function showError(error){
 }
 
 function getEvents(map, lat, lon){
-	var json = $.getJSON("http://api.songkick.com/api/3.0/events.json?apikey=Fgp3vqBaiHFcCEJ0&location=geo:" + lat + "," + lon, function(data) {
-		var events = data.resultsPage.results.event;
+	var json = $.getJSON("http://ws.audioscrobbler.com/2.0/?method=geo.getEvents&api_key=dcd351ddc924b09be225a82db043311c&format=json&limit=100&distance=300&long=" + lon + "&lang=" + lat, function(data) {
+		var events = data.events.event;
 			
 		for (var i=0;i<events.length;i++){
 		
+			var location = events[i].venue.location["geo:point"];
+		
 			var marker = new google.maps.Marker({ 
-				position: new google.maps.LatLng(events[i].location.lat, events[i].location.lng), 
+				position: new google.maps.LatLng(location["geo:lat"], location["geo:long"]), 
 				map: map, 
-				title: events[i].displayName,
+				title: events[i].title,
 				icon: "http://tunemaps.com/images/icon_event.png"
 			});
 			
