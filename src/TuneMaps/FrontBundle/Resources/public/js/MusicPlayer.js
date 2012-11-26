@@ -3,7 +3,7 @@ function onYouTubeIframeAPIReady() {
     player = new Player(YOUTUBEURI HIER,'player');
 }
  */
-document.write("<script src=\"http://www.youtube.com/iframe_api\"></script>");
+
 
 function Player(id,element) { 
 
@@ -35,18 +35,3 @@ function Player(id,element) {
 
     return iPlayer;
 }
-
-$(document).ready(function(){
-        $("#footer").hide();
-        var bigFooter = false;
-        $("#topfooter").click(function(event) {
-                if(bigFooter) {
-                        $("#footer").slideUp();
-                        bigFooter = false;
-                } else {
-                        $("#footer").slideDown();
-                        bigFooter = true;
-                }			
-        });
-});
-
