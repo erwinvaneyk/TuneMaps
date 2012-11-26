@@ -97,7 +97,7 @@ function ajaxLoadVideo(track,artist) {
     $.ajax({
         url: url, //url
         success: function (response) {
-            //console.log("loaded video into player: " + response)
+            console.log(player);
             player.loadVideoById(response.youtubeURI);
         }
     });

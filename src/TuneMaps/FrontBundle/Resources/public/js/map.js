@@ -2,7 +2,7 @@ var map;
 
 function initialize(lat, lon) {
 
-	var userLocation = new google.maps.LatLng(lat, lon);
+	var location = new google.maps.LatLng(lat, lon);
 
 	//custom map style
 	var mapStyle = [
@@ -27,8 +27,8 @@ function initialize(lat, lon) {
 	
 	//initialize map
 	var mapOptions = {
-	  zoom: 10,
-	  center: userLocation,
+	  zoom: 13,
+	  center: location,
 	  mapTypeId: 'styledMap',
 	  streetViewControl: false,
 	   disableDefaultUI: true
@@ -38,10 +38,13 @@ function initialize(lat, lon) {
 
 	//show users location on the map
 	var marker = new google.maps.Marker({
-	  position: userLocation,
+	  position: location,
 	  map: map,
 	  title:"You"
 	});
+	
+	//and finally display events on the map
+	getEvents(map, lat, lon);
 	
 }
 
@@ -60,4 +63,21 @@ function showLocation(position){
   
 function showError(error){
   initialize(52.008238, 4.365864);
+}
+
+function getEvents(map, lat, lon){
+	var json = $.getJSON("http://api.songkick.com/api/3.0/events.json?apikey=Fgp3vqBaiHFcCEJ0&location=geo:" + lat + "," + lon, function(data) {
+		var events = data.resultsPage.results.event;
+			
+		for (var i=0;i<events.length;i++){
+		
+			var marker = new google.maps.Marker({ 
+				position: new google.maps.LatLng(events[i].location.lat, events[i].location.lng), 
+				map: map, 
+				title: events[i].displayName,
+				icon: "http://tunemaps.com/images/icon_event.png"
+			});
+			
+		}
+	});
 }
