@@ -4,6 +4,8 @@ namespace TuneMaps\PlayerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class PlayerController extends Controller
 {
@@ -20,14 +22,14 @@ class PlayerController extends Controller
     public function tracksAction(Request $request, $track) {
             $crawler = new CrawlLastFm();
             $tracks = $crawler->searchTrack($track);
-            return $this->render('TuneMapsPlayerBundle::player.html.twig', array('content' => json_encode($tracks)));
+            return JsonResponse::create($tracks);
     }
-
+    
     private function renderPlayer($track, $artist = '') {
             $crawler = new CrawlLastFm();
             $LastFmUrl = $crawler->getBestTrack($crawler->searchTrack($track, $artist));
-            $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
-            return $this->render('TuneMapsPlayerBundle::player.html.twig', array('content' => $youtubeURI));
+            $youtubeURI = array('youtubeURI' => $crawler->getYoutubeUri($LastFmUrl->{'url'}));
+            return JsonResponse::create($youtubeURI);
     }
 }
 

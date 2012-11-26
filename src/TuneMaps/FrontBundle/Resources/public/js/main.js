@@ -70,8 +70,8 @@ function getSearchResults(){
             $.ajax({
                 url: 'tracks/' + track, //url
                 success: function (response) {
-                    if(response != '') {
-                        tracks = jQuery.parseJSON(response.replace(/&quot;/ig,'"'));   
+                    if(response != '') {   
+                        tracks = response; 
                         if(!(tracks.track instanceof Array))
                             tracks.track = new Array(tracks.track);
                         
@@ -98,7 +98,7 @@ function ajaxLoadVideo(track,artist) {
         url: url, //url
         success: function (response) {
             //console.log("loaded video into player: " + response)
-            player.loadVideoById(response)
+            player.loadVideoById(response.youtubeURI);
         }
     });
 }

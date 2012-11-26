@@ -125,6 +125,7 @@ body{
 
 #menu .track{
 	font-size: 12px;
+        overflow: hidden;
 }
 #menu .track img{
 	float: right;
