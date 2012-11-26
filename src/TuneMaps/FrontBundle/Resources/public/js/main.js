@@ -70,7 +70,8 @@ function getSearchResults(){
             $.ajax({
                 url: 'tracks/' + track, //url
                 success: function (response) {
-                    if(response != '') {   
+                    if(!('error' in response)) {
+                        console.log('Tracks found.');
                         tracks = response; 
                         if(!(tracks.track instanceof Array))
                             tracks.track = new Array(tracks.track);
@@ -79,6 +80,7 @@ function getSearchResults(){
                             animatedShow('#menu ul', 'track','<a class="test" href="javascript:void(0);" onClick="ajaxLoadVideo(tracks.track[' + i +  '].name,tracks.track[' + i + '].artist);">' + tracks.track[i].name + " by "+ tracks.track[i].artist + '</a>',1);
                         }
                     } else {
+                        console.log('No tracks found');
                         animatedShow('#menu ul', 'track', 'No results', 1);
                     }
                 }
@@ -95,10 +97,18 @@ function ajaxLoadVideo(track,artist) {
         url = url + '/' + artist;
     }
     $.ajax({
-        url: url, //url
+        url: url,
         success: function (response) {
             console.log(player);
             player.loadVideoById(response.youtubeURI);
+			
+            if(!('error' in response))  {   
+                console.log('video-id received. Retrieving video..');
+                player.loadVideoById(response.youtubeURI);
+            } else {
+                console.log(response.error.description);
+            }
+			
         }
     });
 }
