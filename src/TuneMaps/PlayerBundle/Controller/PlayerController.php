@@ -22,14 +22,26 @@ class PlayerController extends Controller
     public function tracksAction(Request $request, $track) {
             $crawler = new CrawlLastFm();
             $tracks = $crawler->searchTrack($track);
+            if(!$tracks)
+                $tracks = array('error' => array('code' => 1, 'description' => 'No songs found'));
             return JsonResponse::create($tracks);
     }
     
     private function renderPlayer($track, $artist = '') {
             $crawler = new CrawlLastFm();
-            $LastFmUrl = $crawler->getBestTrack($crawler->searchTrack($track, $artist));
-            $youtubeURI = array('youtubeURI' => $crawler->getYoutubeUri($LastFmUrl->{'url'}));
-            return JsonResponse::create($youtubeURI);
+            $tracks = $crawler->searchTrack($track, $artist);
+            if(!$tracks)
+                $json = array('error' => array('code' => 1, 'description' => 'No songs found'));
+            else {
+                $LastFmUrl = $crawler->getBestTrack($tracks);
+                $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
+                if(!$youtubeURI) {
+                    $json = array('error' => array('code' => 2, 'description' => 'No stream found'));
+                } else {
+                    $json = array('youtubeURI' => $youtubeURI);
+                }
+            }
+            return JsonResponse::create($json);
     }
 }
 
@@ -94,7 +106,6 @@ class CrawlLastFm {
 		
 		$tracks = $json->{'results'}->{'trackmatches'};
 		if(is_string($tracks)) {
-			echo 'nothing found';
 			return false;
 		} else {
 			return $tracks;
