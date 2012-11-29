@@ -20,7 +20,6 @@ class Venue
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Location")
-	 *
 	 */
 	protected $location;
 

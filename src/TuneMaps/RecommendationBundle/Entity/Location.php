@@ -26,5 +26,21 @@ class Location
 	 * @ORM\Column(type="decimal")
 	 */
 	protected $longitude;
+	
+	public function getLattitude() {
+		return $this->lattitude;
+	}
+	
+	public function setLattitude($lattitude) {
+		$this->lattitude = $lattitude;
+	}
+	
+	public function getLongitude() {
+		return $this->longitude;
+	}
+	
+	public function setLongitude($longitude) {
+		$this->longitude = $longitude;
+	}
 
 }

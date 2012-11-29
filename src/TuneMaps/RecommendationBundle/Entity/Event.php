@@ -21,5 +21,13 @@ class Event
 	 * @ORM\OneToOne(targetEntity="Venue") 
 	 */
 	protected $venue;
+	
+	public function getVenue() {
+		return $this->venue;
+	}
+	
+	public function setVenue($venue) {
+		$this->venue = $venue;
+	}
 
 }
