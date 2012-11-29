@@ -20,7 +20,7 @@ class PlayerController extends Controller
     }
 
     public function tracksAction(Request $request, $track) {
-            $crawler = new CrawlLastFm();
+            $crawler = new LastFmCrawler();
             $tracks = $crawler->searchTrack($track);
             if(!$tracks)
                 $tracks = array('error' => array('code' => 1, 'description' => 'No songs found'));
@@ -28,7 +28,7 @@ class PlayerController extends Controller
     }
     
     private function renderPlayer($track, $artist = '') {
-            $crawler = new CrawlLastFm();
+            $crawler = new LastFmCrawler();
             $tracks = $crawler->searchTrack($track, $artist);
             if(!$tracks)
                 $json = array('error' => array('code' => 1, 'description' => 'No songs found'));
@@ -48,9 +48,26 @@ class PlayerController extends Controller
             }
             return JsonResponse::create($json);
     }
+    
+    public function eventsAction(Request $request) {
+        $crawler = new LastFmCrawler();
+        $args = array();
+        if($request->get('location') != null) $args['location'] = $request->get('location');
+        if($request->get('long') != null) $args['long'] = $request->get('long');
+        if($request->get('lang') != null) $args['lang'] = $request->get('lang');
+        if($request->get('radius') != null) $args['radius'] = $request->get('radius');
+        if($request->get('limit') != null) $args['limit'] = $request->get('limit');
+        if($request->get('page') != null) $args['page'] = $request->get('page');
+        $json = $crawler->searchEvents($args);
+        
+        if(!$json)
+            $json = array('error' => array('code' => 3, 'description' => 'No events found'));
+            
+        return JsonResponse::create($json);
+    }
 }
 
-class CrawlLastFm {
+class LastFmCrawler {
 	
 	private $apiKey 	    = 'dcd351ddc924b09be225a82db043311c';//'dcd351ddc924b09be225a82db043311c';
 	private $apiBaseUrl 	= 'http://ws.audioscrobbler.com/2.0/';
@@ -128,7 +145,21 @@ class CrawlLastFm {
             }
         }
 	
-	
+	public function searchEvents(array $args) {
+            $url = $this->apiBaseUrl . '?method=geo.getEvents&format=json&api_key=' . urlencode($this->apiKey);
+            
+            foreach($args as $key => $arg) {
+                $url .= '&' . urlencode($key) . '=' . urlencode($arg);
+            }
+            
+            $json = json_decode($this->getUrl($url));
+            
+            if(!empty($json->{'error'})) {
+                return false;
+            }
+            
+            return $json;
+        }
 	
 	public function correctTrack($track,$artist) {
 		$url = $this->apiBaseUrl . "?method=track.getcorrection&track=" . urlencode($track) . "&artist=" . urlencode($artist) . "&api_key=" . urlencode($this->apiKey) . "&format=json";

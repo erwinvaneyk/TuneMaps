@@ -9,3 +9,7 @@ tune_maps_player_track:
 tune_maps_player_tracks:
     pattern: /tracks/{track}
     defaults: {_controller: TuneMapsPlayerBundle:Player:tracks }
+
+tune_maps_player_event:
+    pattern: /events
+    defaults: {_controller: TuneMapsPlayerBundle:Player:events }

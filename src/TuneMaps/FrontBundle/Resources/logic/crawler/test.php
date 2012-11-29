@@ -12,7 +12,7 @@ if(!empty($_GET["artist"])) {
 	$artist = '';
 }
 
-$crawler = new CrawlLastFm();
+$crawler = new LastFmCrawler();
 $lastFmUrl = $crawler->searchTrack($track,$artist);
 $youtubeURI = $crawler->getYoutubeUri($lastFmUrl);
 if(!$youtubeURI) {
