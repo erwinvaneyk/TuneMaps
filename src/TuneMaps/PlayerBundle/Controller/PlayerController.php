@@ -59,7 +59,7 @@ class PlayerController extends Controller
         if($request->get('radius') != null) $args['radius'] = $request->get('radius');
         if($request->get('limit') != null) $args['limit'] = $request->get('limit');
         if($request->get('page') != null) $args['page'] = $request->get('page');
-        $json = json_encode($crawler->searchEvents($args));
+        $json = $crawler->searchEvents($args);
         
         if(!$json)
             $json = array('error' => array('code' => 3, 'description' => 'No events found'));
