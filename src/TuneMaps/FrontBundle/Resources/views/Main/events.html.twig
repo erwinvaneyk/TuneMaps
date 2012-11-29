@@ -1,0 +1,40 @@
+{% extends 'TuneMapsFrontBundle:Main:main.html.twig' %}
+
+{% block container %}
+<h1>Events</h1>
+<div id="events">
+	<ul id="newsstream">
+		<li><a href="map" class="map">
+				<div class="map_overlay"></div>
+				<img src="http://maps.googleapis.com/maps/api/staticmap?center=51.997142,4.379425&zoom=10&size=300x70&maptype=terrain&sensor=false" class="eventmap" alt="map" />
+			</a>
+			<div class="date"><span class="dateNo">30</span><br />Dec</div>
+			<div class="event_info">
+				<h2>Zomerfestival</h2>
+				<strong>Featuring</strong> <a href="">Di-rect</a>, <a href="">Gers Pardoel</a>, <a href="">Mr. Polska</a>
+			</div>
+		</li>
+		<li><a href="map" class="map">
+				<div class="map_overlay"></div>
+				<img src="http://maps.googleapis.com/maps/api/staticmap?center=51.997142,4.379425&zoom=10&size=300x70&maptype=terrain&sensor=false" class="eventmap" alt="map" />
+			</a>
+			<div class="date"><span class="dateNo">5</span><br />Dec</div>
+			<div class="event_info"></div>
+		</li>
+		<li><a href="map" class="map">
+				<div class="map_overlay"></div>
+				<img src="http://maps.googleapis.com/maps/api/staticmap?center=51.997142,4.379425&zoom=10&size=300x70&maptype=terrain&sensor=false" class="eventmap" alt="map" />
+			</a>
+			<div class="date"><span class="dateNo">10</span><br />Dec</div>
+			<div class="event_info"></div>
+		</li>
+		<li><a href="map" class="map">
+				<div class="map_overlay"></div>
+				<img src="http://maps.googleapis.com/maps/api/staticmap?center=51.997142,4.379425&zoom=10&size=300x70&maptype=terrain&sensor=false" class="eventmap" alt="map" />
+			</a>
+			<div class="date"><span class="dateNo">14</span><br />Dec</div>
+			<div class="event_info"></div>
+		</li>
+	</ul>
+</div>
+{% endblock %}

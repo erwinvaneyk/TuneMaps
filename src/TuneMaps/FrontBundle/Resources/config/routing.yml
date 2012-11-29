@@ -5,3 +5,11 @@ tune_maps_front_homepage:
 tune_maps_front_mainpage:
     pattern:  /map
     defaults: { _controller: TuneMapsFrontBundle:Page:map }
+
+tune_maps_front_timeline:
+    pattern:  /timeline
+    defaults: { _controller: TuneMapsFrontBundle:Page:timeline }
+
+tune_maps_front_events:
+    pattern:  /events
+    defaults: { _controller: TuneMapsFrontBundle:Page:events }
