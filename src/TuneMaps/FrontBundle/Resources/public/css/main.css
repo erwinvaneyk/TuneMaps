@@ -9,7 +9,6 @@ html{
 body{
 	background: #efefef url('../images/bg_light.png');
 	margin: 0;
-	overflow: hidden;
 }
 
 #header{
@@ -18,7 +17,7 @@ body{
 	font-family: arial, serif;
 	padding: 0 14px 0 14px;
 	height: 50px;
-	z-index: 2;
+	z-index: 5;
 	background: -moz-linear-gradient(top, #606c88 0%, #3f4c6b 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#606c88), color-stop(100%,#3f4c6b)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* Chrome10+,Safari5.1+ */

@@ -28,7 +28,8 @@ class PageController extends Controller
 
 	public function eventsAction()
 	{
-		return $this->render('TuneMapsFrontBundle:Main:events.html.twig', array());
+		$events = array();
+		return $this->render('TuneMapsFrontBundle:Main:events.html.twig', array($events));
 	}
 	
 }
