@@ -11,5 +11,5 @@ tune_maps_player_tracks:
     defaults: {_controller: TuneMapsPlayerBundle:Player:tracks }
 
 tune_maps_player_event:
-    pattern: /events
+    pattern: /getEvents
     defaults: {_controller: TuneMapsPlayerBundle:Player:events }
