@@ -28,6 +28,11 @@ class Artist
 	 */
 	protected $songs;
 	
+	/**
+	 * @ORM\ManyToMany(targetEntity="Event", mappedBy="attendingArtists")
+	 */
+	protected $events;
+	
 	public function __construct() {
 		$songs = new ArrayCollection();
 	}
@@ -46,6 +51,14 @@ class Artist
 	
 	public function setSongs($songs) {
 		$this->songs = $songs;
+	}
+	
+	public function getEvents() {
+		return $this->events;
+	}
+	
+	public function setEvents($events) {
+		$this->events = $events;
 	}
 
 }
