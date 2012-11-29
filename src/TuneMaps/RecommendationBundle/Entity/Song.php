@@ -17,9 +17,4 @@ class Song
      */
     protected $mbid;
 
-    public function __construct()
-    {
-        parent::__construct();
-        
-    }
 }
