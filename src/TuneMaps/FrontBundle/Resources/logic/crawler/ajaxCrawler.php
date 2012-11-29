@@ -6,7 +6,7 @@ require 'CrawlLastFm.php';
 
 if(!empty($_GET['method'])) {
     $method = $_GET['method'];
-    $crawler = new CrawlLastFm();
+    $crawler = new LastFmCrawler();
     if($method == 'getTrack') {
         if(!empty($_GET['track'])) {
             $track = $_GET['track'];
