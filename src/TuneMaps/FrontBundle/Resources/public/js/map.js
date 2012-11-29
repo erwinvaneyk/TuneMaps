@@ -65,7 +65,7 @@ function showError(error){
   initialize(52.008238, 4.365864);
 }
 
-function getEvents(map, lat, lon){
+function getEvents(lat, lon){
 	var json = $.getJSON("http://ws.audioscrobbler.com/2.0/?method=geo.getEvents&api_key=dcd351ddc924b09be225a82db043311c&format=json&limit=100&distance=300&long=" + lon + "&lang=" + lat, function(data) {
 		var events = data.events.event;
 			
@@ -79,7 +79,7 @@ function getEvents(map, lat, lon){
 				title: events[i].title,
 				icon: "http://tunemaps.com/images/icon_event.png"
 			});
-			
+						
 		}
 	});
 }

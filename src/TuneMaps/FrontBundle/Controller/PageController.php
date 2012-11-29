@@ -20,4 +20,16 @@ class PageController extends Controller
 	{
 		return $this->render('TuneMapsFrontBundle:Main:map.html.twig', array());
 	}
+	
+	public function timelineAction()
+	{
+		return $this->render('TuneMapsFrontBundle:Main:timeline.html.twig', array());
+	}
+
+	public function eventsAction()
+	{
+		return $this->render('TuneMapsFrontBundle:Main:events.html.twig', array());
+	}
+	
 }
+?>
