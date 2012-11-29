@@ -7,14 +7,19 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tunemaps_user")
+ * @ORM\Table(name="tunemaps_venues")
  */
-class Artist
+class Venue
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="integer")
      */
-    protected $mbid;
+    protected $id;
+	
+	/**
+	 * @OneToOne(targetEntity="Location")
+	 */
+	protected $location;
 
 }
