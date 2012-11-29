@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tunemaps_user")
+ * @ORM\Table(name="tunemaps_artist")
  */
 class Artist
 {

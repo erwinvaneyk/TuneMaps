@@ -4,10 +4,11 @@ namespace TuneMaps\RecommendationBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use TuneMaps\RecommendationBundle\Entity\Location as Location;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tunemaps_venues")
+ * @ORM\Table(name="tunemaps_venue")
  */
 class Venue
 {
@@ -18,7 +19,8 @@ class Venue
     protected $id;
 	
 	/**
-	 * @OneToOne(targetEntity="Location")
+	 * @ORM\OneToOne(targetEntity="Location")
+	 *
 	 */
 	protected $location;
 

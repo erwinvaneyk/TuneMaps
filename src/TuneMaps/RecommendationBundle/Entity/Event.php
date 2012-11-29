@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tunemaps_events")
+ * @ORM\Table(name="tunemaps_event")
  */
 class Event
 {
@@ -18,7 +18,7 @@ class Event
     protected $id;
 	
 	/**
-	 *  
+	 * @ORM\OneToOne(targetEntity="Venue") 
 	 */
 	protected $venue;
 

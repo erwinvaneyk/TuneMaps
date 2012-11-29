@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tunemaps_venues")
+ * @ORM\Table(name="tunemaps_location")
  */
 class Location
 {
@@ -18,12 +18,12 @@ class Location
     protected $id;
 	
 	/**
-	 * @ORM\Column(type="double")
+	 * @ORM\Column(type="decimal")
 	 */
 	protected $lattitude;
 	
 	/**
-	 * @ORM\Column(type="double")
+	 * @ORM\Column(type="decimal")
 	 */
 	protected $longitude;
 
