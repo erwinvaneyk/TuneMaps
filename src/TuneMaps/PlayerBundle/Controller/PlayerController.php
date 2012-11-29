@@ -36,7 +36,11 @@ class PlayerController extends Controller
                 $LastFmUrl = $crawler->getBestTrack($tracks);
                 $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
                 if(!$youtubeURI) {
-                    $json = array('error' => array('code' => 2, 'description' => 'No stream found'));
+                    $youtube = new YoutubeCrawler();
+                    if($altTracks = $youtube->searchTracks($track, $artist))
+                       $json = array('youtubeURI' => $altTracks->{'track'}[0]);
+                    else
+                       $json = array('error' => array('code' => 2, 'description' => 'No stream found'));
                 } else {
                     $json = array('youtubeURI' => $youtubeURI);
                 }
@@ -106,7 +110,8 @@ class CrawlLastFm {
 		
 		$tracks = $json->{'results'}->{'trackmatches'};
 		if(is_string($tracks)) {
-			return false;
+                        $youtube = new YoutubeCrawler();
+                        return $tracks->{'track'} = $youtube->searchTracks($track, $artist);
 		} else {
 			return $tracks;
 		}
@@ -140,4 +145,40 @@ class CrawlLastFm {
 		echo 'corrected search!';
 		return $return;
 	}
+}
+
+class YoutubeCrawler {
+    private $apiKey = 'AIzaSyBWMjX5wSD9Nrdvw73vOTXNHH34pr3yxw4';
+    private $apiBaseUrl = 'https://www.googleapis.com/youtube/v3/';
+    
+    //returns array of youtube-id's
+    public function searchTracks($track, $artist = '') {
+        $url = $this->apiBaseUrl . 'search?part=snippet&alt=json&key=' . $this->apiKey . '&q=' . urlencode($track . ' ' . $artist);
+        $json = json_decode($this->getUrl($url));
+
+        if($json->{'pageInfo'}->{'totalResults'} == 0) {
+            return false;
+        }
+        
+        $tracks = array();
+        $track = $json->{'items'};
+        for($i = 0; $i < $track; $i++) {
+            if(!empty($track[$i]->{'id'}->{'videoId'}))
+                $tracks[] = $track[$i]->{'id'}->{'videoId'};
+        }
+        return tracks;
+    }
+    
+    public function getUrl($url) {
+            $curl_handle=curl_init();
+            curl_setopt($curl_handle, CURLOPT_URL,$url);
+            curl_setopt ($curl_handle, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt ($curl_handle, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+            $raw = curl_exec($curl_handle);
+            curl_close($curl_handle);
+            return $raw;
+    }
+	
 }
