@@ -27,6 +27,11 @@ class Song
 	 */
 	protected $artist;
 	
+	/**
+	 * @ORM\OneToMany(targetEntity="Ranking", mappedBy="song")
+	 */
+	protected $rankings;
+	
 	public function getTitle() {
 		return $this->title;
 	}
@@ -41,6 +46,14 @@ class Song
 	
 	public function setArtist($artist) {
 		$this->artist = $artist;
+	}
+	
+	public function getRankings() {
+		return $this->rankings;
+	}
+	
+	public function setRankings($rankings) {
+		$this->rankings = $rankings;
 	}
 
 }

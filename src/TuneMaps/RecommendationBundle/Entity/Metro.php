@@ -15,19 +15,24 @@ class Metro
      * @ORM\Id
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected $id;
 	
 	/**
      * @ORM\Column(type="string", length=255)
      */
     protected $country;
 	
+	/**
+	 * @ORM\OneToMany(targetEntity="Ranking", mappedBy="metro")
+	 */
+	protected $rankings;
+	
 	public function setName($name) {
-		$this->name = $name;
+		$this->id = $name;
 	}
 	
 	public function getName() {
-		return $this->name;
+		return $this->id;
 	}
 	
 	public function setCountry($country) {
@@ -36,6 +41,14 @@ class Metro
 	
 	public function getCountry() {
 		return $this->country;
+	}
+	
+	public function setRankings($rankings) {
+		$this->rankings = $rankings;
+	}
+	
+	public function getRankings() {
+		return $this->rankings;
 	}
 
 }
