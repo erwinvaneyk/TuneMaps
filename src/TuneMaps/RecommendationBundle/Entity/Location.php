@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="tunemaps_location")
  */
-class Location
+class Location implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -43,5 +43,9 @@ class Location
 	public function setLongitude($longitude) {
 		$this->longitude = $longitude;
 	}
+        
+        public function jsonSerialize() {
+            return (object) get_object_vars($this);
+        }
 
 }

@@ -5,6 +5,7 @@ namespace TuneMaps\PlayerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use TuneMaps\RecommendationBundle\Entity;
 
 
 class PlayerController extends Controller
@@ -58,7 +59,7 @@ class PlayerController extends Controller
         if($request->get('radius') != null) $args['radius'] = $request->get('radius');
         if($request->get('limit') != null) $args['limit'] = $request->get('limit');
         if($request->get('page') != null) $args['page'] = $request->get('page');
-        $json = $crawler->searchEvents($args);
+        $json = json_encode($crawler->searchEvents($args));
         
         if(!$json)
             $json = array('error' => array('code' => 3, 'description' => 'No events found'));
@@ -69,7 +70,7 @@ class PlayerController extends Controller
 
 class LastFmCrawler {
 	
-	private $apiKey 	    = 'dcd351ddc924b09be225a82db043311c';//'dcd351ddc924b09be225a82db043311c';
+	private $apiKey 	= 'dcd351ddc924b09be225a82db043311c';
 	private $apiBaseUrl 	= 'http://ws.audioscrobbler.com/2.0/';
 	
 	// geeft de youtube uri terug van de video op een last.fm-pagina.
@@ -158,11 +159,26 @@ class LastFmCrawler {
                 return false;
             }
             
-            return $json;
+            //convert to local entities
+            $res = array();
+            foreach($json->{'events'}->{'event'} as $key=>$event) {
+                $res[$key] = new Entity\Event;
+                $res[$key]->setName($event->{'id'});
+                $res[$key]->setDateTime(date_parse($event->{'startDate'}));
+                $venue = new Entity\Venue($event->{'venue'}->{'id'});
+                $location = new Entity\Location;
+                $location->setLattitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:lat'});
+                $location->setLongitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:long'});
+                $venue->setLocation($location);
+                $res[$key]->setVenue($venue);
+            }
+            
+            return $res;
         }
 	
 	public function correctTrack($track,$artist) {
-		$url = $this->apiBaseUrl . "?method=track.getcorrection&track=" . urlencode($track) . "&artist=" . urlencode($artist) . "&api_key=" . urlencode($this->apiKey) . "&format=json";
+		$url = $this->apiBaseUrl . "?method=track.getcorrection&track=" . urlencode($track) . "&artist=" . urlencode($artist) . "&api_key=" . 
+                        urlencode($this->apiKey) . "&format=json";
 		$raw = $this->getUrl($url);
 		$json = json_decode($raw);
 		var_dump($json);
