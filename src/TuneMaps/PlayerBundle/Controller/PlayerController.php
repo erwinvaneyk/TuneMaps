@@ -37,8 +37,9 @@ class PlayerController extends Controller
                 $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
                 if(!$youtubeURI) {
                     $youtube = new YoutubeCrawler();
-                    if($altTracks = $youtube->searchTracks($track, $artist))
-                       $json = array('youtubeURI' => $altTracks->{'track'}[0]);
+                    $altTracks = $youtube->searchTracks($track, $artist);
+                    if($altTracks)
+                       $json = array('youtubeURI' => $altTracks[0]);
                     else
                        $json = array('error' => array('code' => 2, 'description' => 'No stream found'));
                 } else {
@@ -110,8 +111,7 @@ class CrawlLastFm {
 		
 		$tracks = $json->{'results'}->{'trackmatches'};
 		if(is_string($tracks)) {
-                        $youtube = new YoutubeCrawler();
-                        return $tracks->{'track'} = $youtube->searchTracks($track, $artist);
+                        return false;
 		} else {
 			return $tracks;
 		}
@@ -160,13 +160,13 @@ class YoutubeCrawler {
             return false;
         }
         
-        $tracks = array();
+        $res = array();
         $track = $json->{'items'};
-        for($i = 0; $i < $track; $i++) {
-            if(!empty($track[$i]->{'id'}->{'videoId'}))
-                $tracks[] = $track[$i]->{'id'}->{'videoId'};
+        foreach($track as $item) {
+            if(!empty($item->{'id'}->{'videoId'}))
+                $res[] = $item->{'id'}->{'videoId'};
         }
-        return tracks;
+        return $res;
     }
     
     public function getUrl($url) {
