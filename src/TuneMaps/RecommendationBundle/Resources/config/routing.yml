@@ -1,4 +1,4 @@
 tune_maps_user_artist_rating:
-    pattern:  /player/{artist}
-    defaults: { _controller: TuneMapsRecommendationBundle:Information:artist }
+    pattern:  /database/metros
+    defaults: { _controller: TuneMapsRecommendationBundle:Information:metrosToDatabase }
 

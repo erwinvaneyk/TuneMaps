@@ -11,3 +11,6 @@ tune_maps_user:
 
 tune_maps_player:
     resource: "@TuneMapsPlayerBundle/Resources/config/routing.yml"
+
+tune_maps_recommendation:
+    resource: "@TuneMapsRecommendationBundle/Resources/config/routing.yml"

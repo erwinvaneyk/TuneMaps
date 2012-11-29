@@ -23,6 +23,7 @@ class AppKernel extends Kernel
 			new FOS\UserBundle\FOSUserBundle(),
 			new TuneMaps\UserBundle\TuneMapsUserBundle(),
 			new TuneMaps\PlayerBundle\TuneMapsPlayerBundle(),
+			new TuneMaps\RecommendationBundle\TuneMapsRecommendationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
