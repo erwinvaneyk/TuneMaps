@@ -43,7 +43,7 @@ class Event implements \JsonSerializable
 	protected $attendingArtists;
 	
 	public function __construct() {
-		$this->attendingArtists = new ArrayCollection();
+		$this->attendingArtists = array();
 	}
 	
 	public function getVenue() {
