@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="tunemaps_artist")
  */
-class Artist
+class Artist implements \JsonSerializable 
 {
     /**
      * @ORM\Id
@@ -19,7 +19,7 @@ class Artist
     protected $id;
 	
 	/**
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(type="string", length=255, unique=true)
 	 */
 	protected $name;
 	
@@ -60,5 +60,9 @@ class Artist
 	public function setEvents($events) {
 		$this->events = $events;
 	}
+        
+        public function jsonSerialize() {
+            return (object) get_object_vars($this);
+        }
 
 }

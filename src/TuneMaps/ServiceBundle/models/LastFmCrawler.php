@@ -98,14 +98,27 @@ class LastFmCrawler {
             //convert to local entities
             $res = array();
             foreach($json->{'events'}->{'event'} as $key=>$event) {
+                //create Event
                 $res[$key] = new Entity\Event;
                 $res[$key]->setName($event->{'title'});
                 $res[$key]->setId($event->{'id'});
                 $res[$key]->setDateTime(date_parse($event->{'startDate'}));
+                
+                //create Artists
+                foreach($event->{'artists'} as $artist_name) {
+                    $artist = new Entity\Artist();
+                    $artist->setName($artist_name);
+                    $res[$key]->addAttentingArtist($artist);
+                }
+                
+                //create Venue
                 $venue = new Entity\Venue($event->{'venue'}->{'id'});
+                
+                //create Location
                 $location = new Entity\Location;
                 $location->setLattitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:lat'});
                 $location->setLongitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:long'});
+                
                 $venue->setLocation($location);
                 $res[$key]->setVenue($venue);
             }

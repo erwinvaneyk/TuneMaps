@@ -86,9 +86,22 @@ class Event implements \JsonSerializable
 	public function setAttendingArtists($attendingArtists) {
 		$this->attendingArtists = $attendingArtists;
 	}
+        
+        public function addAttentingArtist($artist) {
+            $this->attendingArtists[] = $artist;
+        }
 
+        
         public function jsonSerialize() {
-            return (object) get_object_vars($this);
+            $json = array();
+            $json['id'] = $this->id;
+            $json['name'] = $this->name;
+            $json['venue'] = $this->venue;
+            $json['datetime'] = $this->datetime;
+            foreach($this->attendingArtists as $key=>$artist) {
+                $json['attendingArtists'][$key] = $artist->jsonSerialize();
+            }
+            return $json;
         }
         
 }

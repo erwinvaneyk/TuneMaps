@@ -32,6 +32,12 @@ class ServiceController extends Controller
     
     //returns json-object met een youtube-URI
     private function renderPlayer(Request $request, $track, $artist = '') {
+            //check database
+            $em = $this->getDoctrine()->getEntityManager();
+            $rep = $em->getRepository('\TuneMaps\ServiceBundle\Entitiy\MusicSource');
+
+        
+            //crawl web for uri
             $crawler = new Models\LastFmCrawler();
             $tracks = $crawler->searchTrack($track, $artist);
             if(!$tracks)
