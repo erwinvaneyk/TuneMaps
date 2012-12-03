@@ -34,7 +34,16 @@ class ServiceController extends Controller
     private function renderPlayer(Request $request, $track, $artist = '') {
             //check database
             $em = $this->getDoctrine()->getEntityManager();
-            $rep = $em->getRepository('\TuneMaps\ServiceBundle\Entitiy\MusicSource');
+            $searchSong = array('title' => $track);
+            if($artist != '') {
+                if(($artist = $em->getRepository('TuneMaps\RecommendationBundle\Entity\Artist')->findOneBy(array('name' => $artist))) != null)
+                    $searchSong['artist_id'] = $artist->id;
+            }
+            if(($song = $em->getRepository('TuneMaps\RecommendationBundle\Entity\Song')->findOneBy(array('title' => $track, 'artist' => $artist))) != null) {
+                if(($source = $em->getRepository('TuneMaps\ServiceBundle\Entity\MusicSource')->findOneBy(array('song_id' => $song->id),array('rank'))) != null) {
+                    return $source->uri;
+                }
+            }
 
         
             //crawl web for uri

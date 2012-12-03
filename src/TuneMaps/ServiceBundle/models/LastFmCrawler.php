@@ -105,7 +105,11 @@ class LastFmCrawler {
                 $res[$key]->setDateTime(date_parse($event->{'startDate'}));
                 
                 //create Artists
-                foreach($event->{'artists'} as $artist_name) {
+                $artists = $event->{'artists'}->{'artist'};
+                if(is_string($artists))
+                    $artists = array($artists);
+                
+                foreach($artists as $artist_name) {
                     $artist = new Entity\Artist();
                     $artist->setName($artist_name);
                     $res[$key]->addAttentingArtist($artist);
@@ -137,6 +141,7 @@ class LastFmCrawler {
 		}
 		
 		$json = $json->{'corrections'}->{'correction'}->{'track'};
+                $return = array();
 		$return['track'] = $json->{'name'};
 		$return['artist'] = $json->{'artist'}->{'name'};
 		echo 'corrected search!';

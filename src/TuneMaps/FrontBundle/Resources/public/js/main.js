@@ -79,7 +79,7 @@ function getSearchResults(){
 								var trackinfo = trackname + " by " + artist;
 								var cover = '<img src="' + tracks.track[i].image[0]['#text'] + '" />';
 								animatedShow('#menu ul', 'track',
-											 '<a href="javascript:void(0);" onClick="ajaxLoadVideo(' + trackname + ',' + artist + ');">'
+											 '<a href="javascript:void(0);" onClick="ajaxLoadVideo(\'' + trackname + '\',\'' + artist + '\');">'
 											 + trackinfo.substr(0,24) + cover + '</a>' ,1);
 							}
 						} else{
