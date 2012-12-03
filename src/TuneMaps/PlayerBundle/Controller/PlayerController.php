@@ -146,7 +146,7 @@ class LastFmCrawler {
             }
         }
 	
-	public function searchEvents(array $args) {
+		public function searchEvents(array $args) {
             $url = $this->apiBaseUrl . '?method=geo.getEvents&format=json&api_key=' . urlencode($this->apiKey);
             
             foreach($args as $key => $arg) {

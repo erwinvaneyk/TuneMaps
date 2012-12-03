@@ -13,3 +13,7 @@ tune_maps_front_timeline:
 tune_maps_front_events:
     pattern:  /events
     defaults: { _controller: TuneMapsFrontBundle:Page:events }
+
+tune_maps_front_trends:
+    pattern:  /trends
+    defaults: { _controller: TuneMapsFrontBundle:Page:trends }

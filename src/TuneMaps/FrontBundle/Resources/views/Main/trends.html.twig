@@ -1,0 +1,30 @@
+{% extends 'TuneMapsFrontBundle:Main:main.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="../bundles/tunemapsfront/css/charts.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block container %}
+<h1>Trends</h1>
+<div class="chart" id="chartleft">
+	<h2>This week's chart</h2>
+	<table>
+		<tr><th></th><th>Song</th><th>Artist</th></tr>
+		<tr><td>1</td><td>Name</td><td>Artist</td></tr>
+		<tr><td>1</td><td>Name</td><td>Artist</td></tr>
+		<tr><td>1</td><td>Name</td><td>Artist</td></tr>
+	</table>
+</div>
+
+<div class="chart" id="chartright">
+	<h2>Next week's prediction</h2>
+	<table>
+		<tr><th></th><th>Song</th><th>Artist</th></tr>
+		<tr><td>1</td><td>Name</td><td>Artist</td></tr>
+		<tr><td>1</td><td>Name</td><td>Artist</td></tr>
+		<tr><td>1</td><td>Name</td><td>Artist</td></tr>
+	</table>
+</div>
+
+{% endblock %}
