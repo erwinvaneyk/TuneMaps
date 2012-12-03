@@ -133,6 +133,7 @@ body{
 	border: solid 1px #6884AB;
 	margin: 6px 0 5px 5px;
 	border-radius: 4px;
+	z-index: 10;
 }
 
 #menu input{
