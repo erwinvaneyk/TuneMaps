@@ -23,7 +23,7 @@ class Song
 	protected $title;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Artist")
+	 * @ORM\ManyToOne(targetEntity="Artist", cascade={"persist"})
 	 */
 	protected $artist;
 	
@@ -31,6 +31,14 @@ class Song
 	 * @ORM\OneToMany(targetEntity="Ranking", mappedBy="song")
 	 */
 	protected $rankings;
+	
+	public function getId() {
+		return $this->id;
+	}
+	
+	public function setId($id) {
+		$this->id = $id;
+	}
 	
 	public function getTitle() {
 		return $this->title;

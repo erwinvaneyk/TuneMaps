@@ -20,12 +20,12 @@ class Ranking
     protected $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Song")
+	 * @ORM\ManyToOne(targetEntity="Song", cascade={"persist"})
 	 */
 	protected $song;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Metro")
+	 * @ORM\ManyToOne(targetEntity="Metro", cascade={"persist"})
 	 */
 	protected $metro;
 	

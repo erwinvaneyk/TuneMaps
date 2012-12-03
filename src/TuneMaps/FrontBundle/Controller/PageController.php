@@ -3,7 +3,7 @@
 namespace TuneMaps\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use TuneMaps\ServiceBundle\models;
 class PageController extends Controller
 {
     public function homeAction()
@@ -28,19 +28,8 @@ class PageController extends Controller
 
 	public function eventsAction()
 	{
-		$json = "http://ws.audioscrobbler.com/2.0/?method=geo.getEvents&api_key=dcd351ddc924b09be225a82db043311c&format=json&limit=100&distance=300";
-		$events = array();
-		foreach($json->{'events'}->{'event'} as $key=>$event) {
-			$events[$key] = new Entity\Event;
-			$events[$key]->setName($event->{'id'});
-			$events[$key]->setDateTime(date_parse($event->{'startDate'}));
-			$venue = new Entity\Venue($event->{'venue'}->{'id'});
-			$location = new Entity\Location;
-			$location->setLattitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:lat'});
-			$location->setLongitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:long'});
-			$venue->setLocation($location);
-			$events[$key]->setVenue($venue);
-		}
+		$lastfm = new \TuneMaps\ServiceBundle\models\LastFmCrawler();
+		$events = $lastfm->searchEvents(array('limit' => 30, 'festivalsonly' => 1));
 		return $this->render('TuneMapsFrontBundle:Main:events.html.twig', array('events' => $events));
 	}
 	
