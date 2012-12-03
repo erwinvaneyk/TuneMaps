@@ -2,6 +2,8 @@
 
 namespace TuneMaps\ServiceBundle\Models;
 
+use TuneMaps\RecommendationBundle\Entity;
+
 class LastFmCrawler {
 	
 	private $apiKey 	= 'dcd351ddc924b09be225a82db043311c';
@@ -97,7 +99,8 @@ class LastFmCrawler {
             $res = array();
             foreach($json->{'events'}->{'event'} as $key=>$event) {
                 $res[$key] = new Entity\Event;
-                $res[$key]->setName($event->{'id'});
+                $res[$key]->setName($event->{'title'});
+                $res[$key]->setId($event->{'id'});
                 $res[$key]->setDateTime(date_parse($event->{'startDate'}));
                 $venue = new Entity\Venue($event->{'venue'}->{'id'});
                 $location = new Entity\Location;

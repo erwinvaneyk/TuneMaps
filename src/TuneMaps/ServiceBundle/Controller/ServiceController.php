@@ -13,24 +13,26 @@ class ServiceController extends Controller
 {
     public function artistAction(Request $request, $track, $artist)
     {
-            return $this->renderPlayer($track,$artist);
+            return $this->renderPlayer($request, $track,$artist);
     }
 	
     public function trackAction(Request $request, $track)
     {
-            return $this->renderPlayer($track);
+            return $this->renderPlayer($request, $track);
     }
 
+    //returns json-object met alle relevante tracks
     public function tracksAction(Request $request, $track) {
-            $crawler = new LastFmCrawler();
+            $crawler = new Models\LastFmCrawler;
             $tracks = $crawler->searchTrack($track);
             if(!$tracks)
                 $tracks = array('error' => array('code' => 1, 'description' => 'No songs found'));
             return JsonResponse::create($tracks);
     }
     
-    private function renderPlayer($track, $artist = '') {
-            $crawler = new LastFmCrawler();
+    //returns json-object met een youtube-URI
+    private function renderPlayer(Request $request, $track, $artist = '') {
+            $crawler = new Models\LastFmCrawler();
             $tracks = $crawler->searchTrack($track, $artist);
             if(!$tracks)
                 $json = array('error' => array('code' => 1, 'description' => 'No songs found'));
@@ -38,7 +40,7 @@ class ServiceController extends Controller
                 $LastFmUrl = $crawler->getBestTrack($tracks);
                 $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
                 if(!$youtubeURI) {
-                    $youtube = new YoutubeCrawler();
+                    $youtube = new Models\YoutubeCrawler();
                     $altTracks = $youtube->searchTracks($track, $artist);
                     if($altTracks)
                        $json = array('youtubeURI' => $altTracks[0]);
@@ -52,7 +54,7 @@ class ServiceController extends Controller
     }
     
     public function eventsAction(Request $request) {
-        $crawler = new LastFmCrawler();
+        $crawler = new Models\LastFmCrawler();
         $args = array();
         if($request->get('location') != null) $args['location'] = $request->get('location');
         if($request->get('long') != null) $args['long'] = $request->get('long');

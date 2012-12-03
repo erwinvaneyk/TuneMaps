@@ -12,6 +12,8 @@ $(document).ready(function() {
 	
 	//handle search action
 	$('.search form').submit(function(){ 
+		$('#searchbar').attr('disabled', 'disabled');
+		$('#searchbar').css('background', '#eee url("../ajax-loader.gif") no-repeat 5px 5px');
 		getSearchResults(); 
 		return false; 
 	});
@@ -58,36 +60,39 @@ function getSearchResults(){
 		$('#menu ul li').remove('.track');
 	}
 	
-	/* >> ajax call here <<
-	 * show spinner while loading
-	 * do not allow users to send request twice
-	 */
-        
 	//display results
 	animatedShow('#menu ul', 'label searchres', 'Search results', 1);
-        var track = $('#searchbar').val();
+    var track = $('#searchbar').val();
 	if (track != '') {
             $.ajax({
                 url: 'tracks/' + track, //url
                 success: function (response) {
                     if(!('error' in response)) {
-                        console.log('Tracks found.');
                         tracks = response; 
                         if(!(tracks.track instanceof Array))
                             tracks.track = new Array(tracks.track);
                         
-                        for(var i = 0; i < Math.min(5,tracks.track.length); i += 1) {
-                            animatedShow('#menu ul', 'track','<a class="test" href="javascript:void(0);" onClick="ajaxLoadVideo(tracks.track[' + i +  '].name,tracks.track[' + i + '].artist);">' + tracks.track[i].name + " by "+ tracks.track[i].artist + '</a>',1);
-                        }
-                    } else {
-                        console.log('No tracks found');
+						if(tracks.length != 0){
+							for(i = 0; i < Math.min(5,tracks.track.length); i += 1) {
+								var trackname = tracks.track[i].name;
+								var artist = tracks.track[i].artist;
+								var trackinfo = trackname + " by " + artist;
+								var cover = '<img src="' + tracks.track[i].image[0]['#text'] + '" />';
+								animatedShow('#menu ul', 'track',
+											 '<a href="javascript:void(0);" onClick="ajaxLoadVideo(' + trackname + ',' + artist + ');">'
+											 + trackinfo.substr(0,24) + cover + '</a>' ,1);
+							}
+						} else{
+							animatedShow('#menu ul', 'track', 'No results', 1);
+						}
+                    } 
+					else
                         animatedShow('#menu ul', 'track', 'No results', 1);
-                    }
                 }
             });
-        } else {
-            animatedShow('#menu ul', 'track', 'No results', 1);
-        }
+    } else {
+        animatedShow('#menu ul', 'track', 'No results', 1);
+    }
 }
 
 
@@ -119,5 +124,12 @@ function animatedShow(element, classtype, text, n){
 	$(element).append(newItem);
 	if (n > 0)
 		newItem.slideDown("500", function(){animatedShow(element, classtype, text, n-1)});
+	else{
+		//after loading re-enable search bar
+		setTimeout(function(){
+			$('#searchbar').removeAttr("disabled");
+			$('#searchbar').css('background', '#fff url("../search.png") no-repeat 8px 7px');
+		}, 1000);
+	}
 	return newItem;
 }
