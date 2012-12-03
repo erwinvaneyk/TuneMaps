@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new TuneMaps\FrontBundle\TuneMapsFrontBundle(),
 			new FOS\UserBundle\FOSUserBundle(),
 			new TuneMaps\UserBundle\TuneMapsUserBundle(),
-			new TuneMaps\PlayerBundle\TuneMapsPlayerBundle(),
+			new TuneMaps\ServiceBundle\TuneMapsServiceBundle(),
 			new TuneMaps\RecommendationBundle\TuneMapsRecommendationBundle(),
         );
 
