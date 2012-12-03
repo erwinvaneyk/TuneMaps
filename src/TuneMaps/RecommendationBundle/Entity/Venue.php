@@ -19,7 +19,7 @@ class Venue implements \JsonSerializable
     protected $id;
 	
     /**
-        * @ORM\OneToOne(targetEntity="Location")
+        * @ORM\OneToOne(targetEntity="Location", cascade={"persist"})
         */
     protected $location;
      

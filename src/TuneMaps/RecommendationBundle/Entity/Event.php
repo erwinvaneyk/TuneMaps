@@ -46,6 +46,14 @@ class Event implements \JsonSerializable
 		$this->attendingArtists = new ArrayCollection();
 	}
 	
+	public function getId() {
+		return $this->id;
+	}
+	
+	public function setId($id) {
+		$this->id = $id;
+	}
+	
 	public function getVenue() {
 		return $this->venue;
 	}

@@ -1,0 +1,83 @@
+{% extends 'TuneMapsFrontBundle::base.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+var total = 0;
+var count = 0;
+$(document).ready(function() {
+	getMetros();
+});
+function getMetros() {
+	var req = 'http://ws.audioscrobbler.com/2.0/?method=geo.getmetros&api_key=dcd351ddc924b09be225a82db043311c&format=json';
+	var jqxhr = $.getJSON(req, function(data) {
+		total = data.metros.metro.length;
+		var process = false;
+		for(var m in data.metros.metro) {
+			if(data.metros.metro[m].name == "Sydney") {
+				process = true;
+			}
+			if(process && data.metros.metro[m].name != "Sydney") {
+				getCharts(data.metros.metro[m].name);
+			}
+		}
+	});
+}
+function getCharts(metro) {
+	count++;
+	$('#statusTotal .progress').width((count*100 / total) + '%');
+	$('#log').prepend('<p>Processing metro ' + metro + '</p>');
+	var req = 'http://ws.audioscrobbler.com/2.0/?method=geo.getmetroweeklychartlist&api_key=dcd351ddc924b09be225a82db043311c&format=json&metro=' + metro;
+	/*var jqxhr = $.getJSON(req, function(data) {
+		for(var c in data.weeklychartlist.chart) {
+			console.log(data.weeklychartlist.chart[c].from);
+			console.log(data.weeklychartlist.chart[c].to);
+		}
+	});*/
+	$.ajax({
+		url: req,
+		dataType: 'json',
+		async: false,
+		success: function(data) {
+			insertCharts(metro, data);
+		}
+	});
+}
+function insertCharts(metro, data) {
+	var geoCount = 0;
+	var geoTotal = data.weeklychartlist.chart.length;
+	for(var c in data.weeklychartlist.chart) {
+		var from = data.weeklychartlist.chart[c].from;
+		var to = data.weeklychartlist.chart[c].to;
+		$.ajax({
+			url: 'http://localhost/tunemaps/web/app.php/database/rank/' + metro + '/' + from + '/' + to,
+			dataType: 'json',
+			async: false,
+			complete: function(data) {
+				geoCount++;
+				$('#statusGeo .progress').width((geoCount*100 / geoTotal) + '%');
+			},
+			success: function(data) {
+				$('#log').prepend('<span style="color: #0a0;">Successfully inserted chart #' + geoCount + ' (' + metro + ')</span><br />');
+			},
+			error: function(data) {
+				$('#log').prepend('<span style="color: #a00;">Error inserting chart #' + geoCount + ' (' + metro + ')</span><br />');
+			}
+		});
+	}
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<h1 style="width: 600px; margin: 0 auto;">Crawler</h1>
+<div id="statusTotal" style="width: 600px; height: 18px; margin: 10px auto; border: 1px solid #ccc;">
+<div class="progress" style="background: #23d; width: 0px; height: 18px;" />
+</div>
+<div id="statusGeo" style="width: 600px; height: 18px; margin: 10px auto; border: 1px solid #ccc;">
+<div class="progress" style="background: #23d; width: 0px; height: 18px;" />
+</div>
+<div id="log" style="font-family: courier new; font-size: 11px; width: 600px; height: 500px; margin: 10px auto; border: 1px solid #ccc; overflow: scroll;">
+</div>
+{% endblock %}
