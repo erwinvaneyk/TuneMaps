@@ -1,9 +1,9 @@
 <?php
 
-namespace TuneMaps\PlayerBundle;
+namespace TuneMaps\ServiceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class TuneMapsPlayerBundle extends Bundle
+class TuneMapsServiceBundle extends Bundle
 {
 }

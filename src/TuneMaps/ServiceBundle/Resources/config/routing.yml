@@ -1,15 +1,15 @@
-tune_maps_player_artist:
+tune_maps_service_artist:
     pattern:  /player/{track}/{artist}
-    defaults: { _controller: TuneMapsPlayerBundle:Player:artist }
+    defaults: { _controller: TuneMapsServiceBundle:Service:artist }
 
-tune_maps_player_track:
+tune_maps_service_track:
     pattern:  /player/{track}
-    defaults: { _controller: TuneMapsPlayerBundle:Player:track }
+    defaults: { _controller: TuneMapsServiceBundle:Service:track }
     
-tune_maps_player_tracks:
+tune_maps_service_tracks:
     pattern: /tracks/{track}
-    defaults: {_controller: TuneMapsPlayerBundle:Player:tracks }
+    defaults: {_controller: TuneMapsServiceBundle:Service:tracks }
 
-tune_maps_player_event:
+tune_maps_service_event:
     pattern: /getEvents
-    defaults: {_controller: TuneMapsPlayerBundle:Player:events }
+    defaults: {_controller: TuneMapsServiceBundle:Service:events }
