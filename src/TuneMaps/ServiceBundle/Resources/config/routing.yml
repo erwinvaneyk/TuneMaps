@@ -13,3 +13,7 @@ tune_maps_service_tracks:
 tune_maps_service_event:
     pattern: /getEvents
     defaults: {_controller: TuneMapsServiceBundle:Service:events }
+    
+tune_maps_service_trackinfo:
+    pattern: /trackinfo
+    defaults: {_controller: TuneMapsServiceBundle:Service:trackinfo }

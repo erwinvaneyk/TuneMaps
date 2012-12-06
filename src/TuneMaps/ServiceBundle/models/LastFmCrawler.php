@@ -82,7 +82,7 @@ class LastFmCrawler {
             }
         }
 	
-		public function searchEvents(array $args) {
+        public function searchEvents(array $args) {
             $url = $this->apiBaseUrl . '?method=geo.getEvents&format=json&api_key=' . urlencode($this->apiKey);
             
             foreach($args as $key => $arg) {
@@ -128,6 +128,33 @@ class LastFmCrawler {
             }
             
             return $res;
+        }
+        
+        //required: mbid or (artist and track)
+        public function trackInfo(array $args) {
+            if(!empty($args['mbid']) || (!empty($args['track']) && !empty($args['artist']))) {
+                $url = $this->apiBaseUrl . '?method=track.getInfo&format=json&api_key=' . urlencode($this->apiKey);
+                foreach($args as $key=>$arg) {
+                    $url .= '&' . $key . '=' . $arg;
+                }
+                $json = json_decode($this->getUrl($url));
+                
+                if(!empty($json->{'error'})) {
+                    return false;
+                }
+                $json = $json->{'track'};
+                $track = new Entity\Song();
+                $track->setId($json->{'mbid'});
+                $artist = new Entity\Artist();
+                $artist->setId($json->{'artist'}->{'mbid'});
+                $artist->setName($json->{'artist'}->{'name'});
+                $track->setArtist($artist);
+                $track->setTitle($json->{'name'});
+		
+                return $track;
+            } else {
+                return false;
+            }
         }
 	
 	public function correctTrack($track,$artist) {

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TuneMaps\RecommendationBundle\Entity;
 use TuneMaps\ServiceBundle\Models;
+use TuneMaps\ServiceBundle\Entity as Source;
 
 
 class ServiceController extends Controller
@@ -31,38 +32,64 @@ class ServiceController extends Controller
     }
     
     //returns json-object met een youtube-URI
-    private function renderPlayer(Request $request, $track, $artist = '') {
+    private function renderPlayer(Request $request, $track, $artist_name = '') {
             //check database
             $em = $this->getDoctrine()->getEntityManager();
             $searchSong = array('title' => $track);
-            if($artist != '') {
-                if(($artist = $em->getRepository('TuneMaps\RecommendationBundle\Entity\Artist')->findOneBy(array('name' => $artist))) != null)
-                    $searchSong['artist_id'] = $artist->id;
+            if($artist_name != '') {
+                if(($artist = $em->getRepository('TuneMaps\RecommendationBundle\Entity\Artist')->findOneBy(array('name' => $artist_name))) != null) {
+                    $searchSong['artist_id'] = $artist->getId();
+                }
             }
             if(($song = $em->getRepository('TuneMaps\RecommendationBundle\Entity\Song')->findOneBy(array('title' => $track, 'artist' => $artist))) != null) {
-                if(($source = $em->getRepository('TuneMaps\ServiceBundle\Entity\MusicSource')->findOneBy(array('song_id' => $song->id),array('rank'))) != null) {
-                    return $source->uri;
+                if(($source = $em->getRepository('TuneMaps\ServiceBundle\Entity\MusicSource')->findOneBy(array('song' => $song))) != null) {
+                    $json = array('youtubeURI' => $source->getUri(), 'cache' => true);
                 }
             }
 
-        
-            //crawl web for uri
-            $crawler = new Models\LastFmCrawler();
-            $tracks = $crawler->searchTrack($track, $artist);
-            if(!$tracks)
-                $json = array('error' => array('code' => 1, 'description' => 'No songs found'));
-            else {
-                $LastFmUrl = $crawler->getBestTrack($tracks);
-                $youtubeURI = $crawler->getYoutubeUri($LastFmUrl->{'url'});
-                if(!$youtubeURI) {
-                    $youtube = new Models\YoutubeCrawler();
-                    $altTracks = $youtube->searchTracks($track, $artist);
-                    if($altTracks)
-                       $json = array('youtubeURI' => $altTracks[0]);
-                    else
-                       $json = array('error' => array('code' => 2, 'description' => 'No stream found'));
-                } else {
-                    $json = array('youtubeURI' => $youtubeURI);
+            if(empty($json)) {
+                //crawl web for uri
+                $crawler = new Models\LastFmCrawler();
+                $tracks = $crawler->searchTrack($track, $artist_name);
+                if(!$tracks)
+                    $json = array('error' => array('code' => 1, 'description' => 'No songs found'));
+                else {
+                    $bestTrack = $crawler->getBestTrack($tracks);
+                    $youtubeURI = $crawler->getYoutubeUri($bestTrack->{'url'});
+                    if(!$youtubeURI) {
+                        $youtube = new Models\YoutubeCrawler();
+                        $altTracks = $youtube->searchTracks($track, $artist_name);
+                        if($altTracks) {
+                            $json = array('youtubeURI' => $altTracks[0]);
+                        } else
+                        $json = array('error' => array('code' => 2, 'description' => 'No stream found'));
+                    } else {
+                        //build entities
+                        $source = new Source\MusicSource();
+                        $source->setUri($youtubeURI);
+                        $source->setRank(100);
+                        if(empty($song)) {
+                            $song = new Entity\Song();
+                            $song->setTitle($track);
+                            $song->setId($bestTrack->{'mbid'});
+                            if(empty($artist) && $artist_name != '') {
+                                $artist = new Entity\Artist();
+                                //get artist
+                                $info = $crawler->trackInfo(array('mbid' => $song->getId()));
+                                $artist = $info->getArtist();
+                                $em->persist($artist);
+                            }
+                            $song->setArtist($artist);
+                            $em->persist($song);
+                            $source->setSong($song);
+                        }
+                        $source->setType('youtube');
+                        if($em->getRepository('TuneMaps\ServiceBundle\Entity\MusicSource')->findBy(array('uri' => $source->getUri())) == null) {
+                            $em->persist($source);
+                            $em->flush();
+                        }
+                        $json = array('youtubeURI' => $source->getUri(), 'cache' => false);
+                    }
                 }
             }
             return JsonResponse::create($json);
@@ -82,6 +109,19 @@ class ServiceController extends Controller
         if(!$json)
             $json = array('error' => array('code' => 3, 'description' => 'No events found'));
             
+        return JsonResponse::create($json);
+    }
+    
+    public function trackinfoAction(Request $request) {
+        $crawler = new Models\LastFmCrawler();
+        if($request->get('mbid') != null) $args['mbid'] = $request->get('mbid');
+        if($request->get('track') != null) $args['track'] = $request->get('track');
+        if($request->get('artist') != null) $args['artist'] = $request->get('artist');
+        $json = $crawler->trackInfo($args);
+        
+        if(!$json)
+            $json = array('error' => array('code' => 1, 'description' => 'No song found'));
+        
         return JsonResponse::create($json);
     }
 }
