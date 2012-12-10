@@ -75,12 +75,21 @@ function showDefaultMap(error){
 function getEvents(map, lat, lon){
     $.getJSON("getEvents?&distance=300&long=" + lon + "&lang=" + lat + "&limit=100", function(events) {
         for (var i=0;i<events.length;i++){
-            new google.maps.Marker({ 
-                position: new google.maps.LatLng(events[i].venue.location.lattitude, events[i].venue.location.longitude), 
-                map: map, 
-                title: events[i].name + " in " + events[i].venue.name,
-                icon: "http://tunemaps.com/images/icon_event.png"
-            });
+            createMarker(map, events[i]);
         }
     });
+}
+
+function createMarker(map, event){
+	var marker = new google.maps.Marker({ 
+		position: new google.maps.LatLng(event.venue.location.lattitude, event.venue.location.longitude), 
+		map: map, 
+		title: event.name + " in " + event.venue.name,
+		icon: "http://tunemaps.com/images/icon_event.png"
+	});
+	google.maps.event.addListener(marker, 'click', function() {
+		$('#event_details_name').html(event.venue.name);
+		$('#event_details img').attr("src", event.image);
+	});
+	return marker;
 }
