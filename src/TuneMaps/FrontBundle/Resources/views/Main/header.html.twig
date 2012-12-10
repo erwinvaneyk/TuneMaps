@@ -1,10 +1,20 @@
 <div id="header">
 	<div id="header_content">
 		<div id="logo">
-			<a href="map"><img src="{{ asset('bundles/tunemapsfront/images/logo-big.png') }}" alt="Tunemaps" /></a>
+			<a href="map"><img src="{{ asset('bundles/tunemapsfront/images/logo.png') }}" alt="Tunemaps" /></a>
 		</div>
 		<ul>
-			<li class="button">{{ app.user.username }}</li>
+			<li class="button">Events</li>
+			<li class="button">Trends</li>
+			<li class="button">Music discovery</li>
+		</ul>
+		<ul class="right">
+			<li class="search">
+				<form autocomplete="off">
+				<input type="text" name="searchbar" id="searchbar" />
+				</form>
+			</li>
+			<li>{{ app.user.username }}</li>
 			<li class="button"><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
 		</ul>
 	</div>
