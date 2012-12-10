@@ -3,16 +3,18 @@
 {% block container %}
 <div id="event_details">
 	<img src="" />
-	<h2>Event name</h2>
-	Location
+	<h2 id="event_details_name">Event name</h2>
+	<span id="event_details_location">Location</span>
 	
-	<div class="details">
+	<div id="event_details_description" class="details">
 		Description
 	</div>
 	
 	<h2>Featuring artists</h2>
-	<a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> 
-	<a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> 
+	<div id="event_details_artists">
+		<a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> 
+		<a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> <a href="">Artist</a> 
+	</div>
 </div>
 
 <div id="map_canvas" class="bigmap"></div>
