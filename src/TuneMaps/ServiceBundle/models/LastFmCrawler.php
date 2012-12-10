@@ -4,7 +4,7 @@ namespace TuneMaps\ServiceBundle\Models;
 
 use TuneMaps\RecommendationBundle\Entity;
 
-class LastFmCrawler {
+class LastFmCrawler extends AbstractCrawler {
 	
 	private $apiKey 	= 'dcd351ddc924b09be225a82db043311c';
 	private $apiBaseUrl 	= 'http://ws.audioscrobbler.com/2.0/';
@@ -24,30 +24,14 @@ class LastFmCrawler {
 		for($i = 0; $i < $params->length; $i++) {
 			$item = $params->item($i);
 			if($item->getAttribute('name') == 'movie') {
-				return $this->stripYoutubeURL($item->getAttribute('value'));
+                            $url = current(explode('?',$item->getAttribute('value')));
+                            $url = explode('/',$url);
+                            return end($url);
 			}
 		}
 		return false;		
 	}
-	
-	// haalt de video-URI uit een youtube-URL voor een bepaalde video
-	public function stripYoutubeURL($url) {
-		$url = current(explode('?',$url));
-		$url = explode('/',$url);
-		$url = end($url);
-		return $url;
-	}
-	
-	public function getUrl($url) {
-		$curl_handle=curl_init();
-		curl_setopt($curl_handle, CURLOPT_URL,$url);
-		curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 5);
-		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-		$raw = curl_exec($curl_handle);
-		curl_close($curl_handle);
-		return $raw;
-	}
-	
+        
 	public function searchTrack($track, $artist = "") {
 		//create url
 		$url = $this->apiBaseUrl . "?method=track.search&track=" . urlencode($track) . "&api_key=" . urlencode($this->apiKey) . "&format=json";
@@ -117,6 +101,7 @@ class LastFmCrawler {
                 
                 //create Venue
                 $venue = new Entity\Venue($event->{'venue'}->{'id'});
+                $venue->setName($event->{'venue'}->{'name'});
                 
                 //create Location
                 $location = new Entity\Location;

@@ -19,6 +19,12 @@ class Venue implements \JsonSerializable
     protected $id;
 	
     /**
+     *
+     * @ORM\Column(type="string", length=255) 
+     */
+    protected $name;
+    
+    /**
         * @ORM\OneToOne(targetEntity="Location", cascade={"persist"})
         */
     protected $location;
@@ -37,6 +43,14 @@ class Venue implements \JsonSerializable
     
     public function setLocation($location) {
         $this->location = $location;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+    
+    public function setName($name) {
+        $this->name = $name;
     }
 
     public function jsonSerialize() {
