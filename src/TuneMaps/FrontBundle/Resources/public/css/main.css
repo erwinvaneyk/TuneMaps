@@ -331,8 +331,8 @@ body{
 
 #event_details .details{
 	background: #fff;
-	padding: 5px;
-	font-size: 11px;
+	padding: 10px;
+	font-size: 13px;
 	min-height: 50px;
 	border-radius: 5px;
 	clear: both;
@@ -340,7 +340,6 @@ body{
 
 #event_details a{
 	color: #3282BA;
-	font-size: 14px;
 	line-height: 18px;
 }
 

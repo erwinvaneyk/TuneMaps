@@ -88,8 +88,15 @@ function createMarker(map, event){
 		icon: "http://tunemaps.com/images/icon_event.png"
 	});
 	google.maps.event.addListener(marker, 'click', function() {
-		$('#event_details_name').html(event.venue.name);
+		$('#event_details_name').html(event.name);
+		$('#event_details_location').html(event.venue.name);
 		$('#event_details img').attr("src", event.image);
+		$('#event_details_datetime').html(event.datetime.day + " " + event.datetime.month + " " + event.datetime.year + ", " + event.datetime.hour + ":" + event.datetime.minute);
+		var artists = "";
+		for(artist in event.attendingArtists){
+			artists += "<a href=\"\">" + event.attendingArtists[artist].name + "</a><br />";
+		}
+		$('#event_details_artists').html(artists);
 	});
 	return marker;
 }
