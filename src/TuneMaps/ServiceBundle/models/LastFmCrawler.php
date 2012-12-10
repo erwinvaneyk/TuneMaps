@@ -86,7 +86,7 @@ class LastFmCrawler extends AbstractCrawler {
                 $res[$key] = new Entity\Event;
                 $res[$key]->setName($event->{'title'});
                 $res[$key]->setId($event->{'id'});
-                $res[$key]->setDateTime(date_parse($event->{'startDate'}));
+                $res[$key]->setDateTime(Date("j F Y, H:i ",strtotime($event->{'startDate'})));
                 
                 //create Artists
                 $artists = $event->{'artists'}->{'artist'};
@@ -109,7 +109,9 @@ class LastFmCrawler extends AbstractCrawler {
                 $location->setLongitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:long'});
                 
                 //custom retrievals (not stored)
-                $res[$key]->{'image'} = $event->{'image'}[2]->{'#text'};
+                if(!$res[$key]->image = $event->{'image'}[2]->{'#text'}) {
+                    $res[$key]->image = 'http://images.hacktabs.com//2012/07/404-not-found.gif';
+                } 
                 
                 $venue->setLocation($location);
                 $res[$key]->setVenue($venue);
@@ -163,5 +165,4 @@ class LastFmCrawler extends AbstractCrawler {
 		return $return;
 	}
 }
-
 ?>
