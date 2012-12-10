@@ -65,7 +65,7 @@ function getSearchResults(){
     var track = $('#searchbar').val();
 	if (track != '') {
             $.ajax({
-                url: 'tracks/' + track, //url
+                url: 'service/tracks/' + track, //url
                 success: function (response) {
                     if(!('error' in response)) {
                         tracks = response; 
@@ -96,7 +96,7 @@ function getSearchResults(){
 
 
 function ajaxLoadVideo(track,artist) {
-    var url = 'player/' + track;
+    var url = 'service/player/' + track;
     if(artist != '') {
         url = url + '/' + artist;
     }

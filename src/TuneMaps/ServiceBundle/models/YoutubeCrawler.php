@@ -11,7 +11,7 @@ class YoutubeCrawler extends AbstractCrawler {
         $url = $this->apiBaseUrl . 'search?part=snippet&alt=json&key=' . $this->apiKey . '&q=' . urlencode($track . ' ' . $artist);
         $json = json_decode($this->getUrl($url));
 
-        if($json->{'pageInfo'}->{'totalResults'} == 0) {
+        if(!$json || $json->{'pageInfo'}->{'totalResults'} == 0) {
             return false;
         }
         

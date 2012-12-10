@@ -108,6 +108,9 @@ class LastFmCrawler extends AbstractCrawler {
                 $location->setLattitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:lat'});
                 $location->setLongitude($event->{'venue'}->{'location'}->{'geo:point'}->{'geo:long'});
                 
+                //custom retrievals (not stored)
+                $res[$key]->{'image'} = $event->{'image'}[2]->{'#text'};
+                
                 $venue->setLocation($location);
                 $res[$key]->setVenue($venue);
             }
