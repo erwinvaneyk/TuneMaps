@@ -1,29 +1,10 @@
+//setup map
 var map;
+getUserLocation();
 
-function initialize(lat, lon) {
-
+//initializes map centered at lat,lon in the element with id 'map_canvas'
+function initializeMap(lat, lon) {
 	var location = new google.maps.LatLng(lat, lon);
-
-	//custom map style
-	var mapStyle = [
-	  {
-		"featureType": "road",
-		"stylers": [
-		  { "visibility": "off" }
-		]
-	  },{
-		"featureType": "administrative",
-		"stylers": [
-		  { "visibility": "on" },
-		  { "weight": 0.5 },
-		  { "gamma": 1.8 }
-		]
-	  },{
-		"stylers": [
-		  { "saturation": 13 }
-		]
-	  } 
-	];
 	
 	//initialize map
 	var mapOptions = {
@@ -33,53 +14,77 @@ function initialize(lat, lon) {
 	  streetViewControl: false,
 	   disableDefaultUI: true
 	};
+        
+        //insert map object into the element with id 'map_canvas'
 	map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-	map.mapTypes.set('styledMap', new google.maps.StyledMapType(mapStyle,{ map: map }));
+	map.mapTypes.set('styledMap', new google.maps.StyledMapType(mapStyle(),{ map: map }));
 
-	//show users location on the map
-	var marker = new google.maps.Marker({
+	//show location of the user on the map
+	new google.maps.Marker({
 	  position: location,
 	  map: map,
 	  title:"You"
 	});
 	
-	//and finally display events on the map
+	//display events on the map
 	getEvents(map, lat, lon);
-	
 }
 
-getLocation();
+//returns the current mapStyle options 
+function mapStyle() {
+    return [
+        {
+            "featureType": "road",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },{
+            "featureType": "administrative",
+            "stylers": [
+                { "visibility": "on" },
+                { "weight": 0.5 },
+                { "gamma": 1.8 }
+            ]
+        },{
+            "stylers": [
+                { "saturation": 13 }
+            ]
+        } 
+    ];
+}
 
-function getLocation(){
+//Retrieve the location of the user (via the browser)
+function getUserLocation(){
   if (navigator.geolocation)
-    navigator.geolocation.getCurrentPosition(showLocation,showError);
+    navigator.geolocation.getCurrentPosition(showMapByLocation,showDefaultMap);
   else
 	alert("Geolocation is not supported by this browser.");
 }
   
-function showLocation(position){
-	initialize(position.coords.latitude, position.coords.longitude);
+//Show map centered around a position
+function showMapByLocation(position){
+	initializeMap(position.coords.latitude, position.coords.longitude);
 }  
-  
-function showError(error){
-  initialize(52.008238, 4.365864);
+
+//Show map centered around a default location (if user doesn't supply his location
+function showDefaultMap(error){
+  initializeMap(52.008238, 4.365864);
 }
 
-function getEvents(lat, lon){
-	var json = $.getJSON("http://ws.audioscrobbler.com/2.0/?method=geo.getEvents&api_key=dcd351ddc924b09be225a82db043311c&format=json&limit=100&distance=300&long=" + lon + "&lang=" + lat, function(data) {
-		var events = data.events.event;
-			
-		for (var i=0;i<events.length;i++){
-		
-			var location = events[i].venue.location["geo:point"];
-		
-			var marker = new google.maps.Marker({ 
-				position: new google.maps.LatLng(location["geo:lat"], location["geo:long"]), 
-				map: map, 
-				title: events[i].title,
-				icon: "http://tunemaps.com/images/icon_event.png"
-			});
-						
-		}
-	});
+//retrieve events in the nearby area
+function getEvents(map, lat, lon){
+    $.getJSON("getEvents?&distance=300&long=" + lon + "&lang=" + lat + "&limit=100", function(data) {
+        var events = data;
+
+        for (var i=0;i<events.length;i++){
+            var location = events[i].venue.location;
+
+            new google.maps.Marker({ 
+                position: new google.maps.LatLng(location.lattitude, location.longitude), 
+                map: map, 
+                title: events[i].name,
+                icon: "http://tunemaps.com/images/icon_event.png"
+            });
+        }
+    });
 }
