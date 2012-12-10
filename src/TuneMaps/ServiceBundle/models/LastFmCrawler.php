@@ -101,6 +101,7 @@ class LastFmCrawler extends AbstractCrawler {
                 
                 //create Venue
                 $venue = new Entity\Venue($event->{'venue'}->{'id'});
+                $venue->setName($event->{'venue'}->{'name'});
                 
                 //create Location
                 $location = new Entity\Location;

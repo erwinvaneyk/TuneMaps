@@ -73,16 +73,12 @@ function showDefaultMap(error){
 
 //retrieve events in the nearby area
 function getEvents(map, lat, lon){
-    $.getJSON("getEvents?&distance=300&long=" + lon + "&lang=" + lat + "&limit=100", function(data) {
-        var events = data;
-
+    $.getJSON("getEvents?&distance=300&long=" + lon + "&lang=" + lat + "&limit=100", function(events) {
         for (var i=0;i<events.length;i++){
-            var location = events[i].venue.location;
-
             new google.maps.Marker({ 
-                position: new google.maps.LatLng(location.lattitude, location.longitude), 
+                position: new google.maps.LatLng(events[i].venue.location.lattitude, events[i].venue.location.longitude), 
                 map: map, 
-                title: events[i].name,
+                title: events[i].name + " in " + events[i].venue.name,
                 icon: "http://tunemaps.com/images/icon_event.png"
             });
         }
