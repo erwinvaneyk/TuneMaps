@@ -73,7 +73,7 @@ function showDefaultMap(error){
 
 //retrieve events in the nearby area
 function getEvents(map, lat, lon){
-    $.getJSON("getEvents?&distance=300&long=" + lon + "&lang=" + lat + "&limit=100", function(events) {
+    $.getJSON("service/events?&distance=300&long=" + lon + "&lang=" + lat + "&limit=100", function(events) {
         for (var i=0;i<events.length;i++){
             new google.maps.Marker({ 
                 position: new google.maps.LatLng(events[i].venue.location.lattitude, events[i].venue.location.longitude), 
