@@ -47,9 +47,9 @@ function onYouTubeIframeAPIReady() {
 $(window).resize(setContainerDimensions);
 
 function setContainerDimensions(){
-	$('#container').css('width', (document.documentElement.offsetWidth-200) + 'px');
 	$('#container').css('height', (window.innerHeight-50) + 'px');
 	$('.bigmap').css('height', (window.innerHeight-50) + 'px');
+	$('#map_canvas').css('width', (window.innerWidth-290) + 'px');
 	return;
 }
 
