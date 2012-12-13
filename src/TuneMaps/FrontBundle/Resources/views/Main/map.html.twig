@@ -1,4 +1,6 @@
-{% extends 'TuneMapsFrontBundle:Main:main.html.twig' %}
+{% block javascripts %}
+<script src="{{ asset('bundles/tunemapsfront/js/map.js') }}"></script>
+{% endblock %}
 
 {% block container %}
 <div id="event_details">

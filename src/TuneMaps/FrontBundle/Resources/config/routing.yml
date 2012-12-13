@@ -1,8 +1,8 @@
 tune_maps_front_homepage:
     pattern:  /
-    defaults: { _controller: TuneMapsFrontBundle:Page:home }
+    defaults: { _controller: TuneMapsFrontBundle:Page:main }
 
-tune_maps_front_mainpage:
+tune_maps_front_map:
     pattern:  /map
     defaults: { _controller: TuneMapsFrontBundle:Page:map }
 
@@ -10,10 +10,14 @@ tune_maps_front_timeline:
     pattern:  /timeline
     defaults: { _controller: TuneMapsFrontBundle:Page:timeline }
 
-tune_maps_front_events:
-    pattern:  /events
-    defaults: { _controller: TuneMapsFrontBundle:Page:events }
-
 tune_maps_front_trends:
     pattern:  /trends
     defaults: { _controller: TuneMapsFrontBundle:Page:trends }
+
+tune_maps_front_explore_string:
+    pattern:  /explore/{searchstring}
+    defaults: { _controller: TuneMapsFrontBundle:Page:explore }
+
+tune_maps_front_explore:
+    pattern:  /explore
+    defaults: { _controller: TuneMapsFrontBundle:Page:explore }

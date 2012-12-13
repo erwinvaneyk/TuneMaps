@@ -6,6 +6,8 @@ $(document).ready(function() {
         tracks = {};
         track = null;
 	
+	$('#container').click(removeSearchResults);
+	
 	//music player
 	function tick(){
 		$('#player li:first').animate({'opacity':0}, 200, function () {$(this).appendTo($('#player ul')).css('opacity', 1);});
@@ -60,10 +62,7 @@ function setContainerDimensions(){
 
 function getSearchResults(){
 	//delete old results
-	if ($('#menu ul li').hasClass('searchres')){
-		$('#menu ul li').remove('.searchres');
-		$('#menu ul li').remove('.track');
-	}
+	removeSearchResults()
 	
 	//display results
 	animatedShow('#menu ul', 'label searchres', 'Search results', 1);
@@ -78,29 +77,35 @@ function getSearchResults(){
                             tracks.track = new Array(tracks.track);
 
                             if(tracks.length != 0){
-                                for(i = 0; i < Math.min(5,tracks.track.length); i += 1) {
+                                for(i = 0; i < Math.min(5,tracks.track.length); i+=1) {
                                     var trackname = tracks.track[i].name;
                                     var artist = tracks.track[i].artist;
                                     var trackinfo = trackname + " by " + artist;
                                     var cover = '<img src="' + tracks.track[i].image[0]['#text'] + '" />';
-                                    animatedShow('#menu ul', 'track',
+                                    animatedShow('#search_results', 'track',
                                                                 '<a href="javascript:void(0);" onClick="ajaxLoadVideo(\'' + trackname + '\',\'' + artist + '\');">'
-                                                                + trackinfo.substr(0,24) + cover + '</a>' ,1);
+                                                                + trackinfo.substr(0,18) + cover + '</a>' ,1);
                                 }
+								animatedShow('#search_results', 'track more last', '<a href="javascript:void(0);" onClick="loadPage(\'explore/' + track + '\');">Show more results...</a>', 1);
                             } else{
-                                animatedShow('#menu ul', 'track', 'No results', 1);
+                                animatedShow('#search_results', 'track last', 'No results', 1);
                             }
                     } else
-                        animatedShow('#menu ul', 'track', 'No results', 1);
+                        animatedShow('#search_results', 'track last', 'No results', 1);
                 }
             });
     } else {
-        animatedShow('#menu ul', 'track', 'No results', 1);
+        animatedShow('#search_results', 'track last', 'No results', 1);
     }
 }
 
+function removeSearchResults(){
+	$('#search_results li').remove();
+}
 
 function ajaxLoadVideo(track,artist) {
+	removeSearchResults()
+
     var url = 'service/player/' + track;
     if(artist != '') {
         url = url + '/' + artist;
@@ -122,6 +127,16 @@ function ajaxLoadVideo(track,artist) {
     });
 }
 
+function loadPage(name){
+
+	//load pages
+	$('#container').load(name, function(){
+		removeSearchResults();
+		setContainerDimensions();
+		getUserLocation();
+	});
+	
+}
 
 function animatedShow(element, classtype, text, n){
 	var newItem = $('<li class="' + classtype + '">' + text + '</li>').hide();

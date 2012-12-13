@@ -74,7 +74,7 @@ function showMapByLocation(position){
 
 //Show map centered around a default location (if user doesn't supply his location
 function showDefaultMap(error){
-  initializeMap(52.008238, 4.365864);
+  initializeMap(40.613952,-74.493896);
 }
 
 //retrieve events in the nearby area

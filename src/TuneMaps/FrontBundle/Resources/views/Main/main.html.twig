@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
 <link href="../bundles/tunemapsfront/css/main.css" rel="stylesheet" type="text/css" />
+<link href="../bundles/tunemapsfront/css/charts.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block javascripts %}
@@ -17,6 +18,7 @@
 {% include 'TuneMapsFrontBundle:Main:header.html.twig' %}
 <div id="container">
 {% block container %}
+	{% include 'TuneMapsFrontBundle:Main:map.html.twig' %}
 {% endblock %}
 </div>
 {% endblock %}

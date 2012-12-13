@@ -126,16 +126,17 @@ body{
 	line-height: 22px;
 }
 
-#menu .track{
+#search_results .track{
 	font-size: 12px;
-        overflow: hidden;
+    overflow: hidden;
 }
-#menu .track img{
-	float: right;
-	height: 30px;
-	width: 30px;
+#search_results a{ color: #000 !important; }
+#search_results .track img{
+	float: left;
+	height: 22px;
+	width: 22px;
 	border: solid 1px #6884AB;
-	margin: 6px 0 5px 5px;
+	margin: -1px 4px 5px 0px;
 	border-radius: 4px;
 	z-index: 10;
 }
@@ -155,7 +156,6 @@ body{
 }
 
 #content{
-	height: 1100px;
 	padding: 10px;
 }
 
@@ -294,6 +294,32 @@ body{
 #event_details_artists{
 	overflow: auto;
 	max-height: 300px;
+}
+
+#search_results{
+	position: absolute;
+}
+#search_results li{
+	float: none;
+	border-color: #aaa;
+	width: 190px;
+	background: #fff;
+	color: #000;
+	padding: 0;
+	height: 20px;
+	margin-left: -50px;
+	line-height: 20px;
+	padding: 5px;
+	box-shadow: 2px 4px 5px #888;
+	border-bottom: solid 1px #DFE6E8;
+}
+#search_results li:hover{
+	background: #DFE6E8;
+}
+#search_results .more{ text-indent: 27px; }
+#search_results .last{
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 h1, h2{

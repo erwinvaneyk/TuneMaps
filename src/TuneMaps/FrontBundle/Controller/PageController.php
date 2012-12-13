@@ -3,6 +3,7 @@
 namespace TuneMaps\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use TuneMaps\ServiceBundle\models;
 class PageController extends Controller
 {
@@ -36,6 +37,11 @@ class PageController extends Controller
 	public function trendsAction()
 	{
 		return $this->render('TuneMapsFrontBundle:Main:trends.html.twig', array());
+	}
+	
+	public function exploreAction(Request $request, $searchstring)
+	{
+		return $this->render('TuneMapsFrontBundle:Main:explore.html.twig', array('searchstring' => $searchstring));
 	}
 	
 }
