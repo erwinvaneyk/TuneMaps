@@ -1,3 +1,5 @@
+var showdetails;
+
 $(document).ready(function() {
 	//set container dimensions
 	setContainerDimensions();
@@ -18,25 +20,25 @@ $(document).ready(function() {
 		return false; 
 	});
 	
-        $('#button_play').click(function(event) {
-            console.log('play/pause button!: ' + player.getPlayerState());
-            if(player.getPlayerState() == 1) {
-                player.pauseTrack();
-                $(this).text('play');
-            } else {
-                player.playTrack();
-                $(this).text('pause');
-            }
-        });
-        
-        $('#button_next').click(function() {
-            player.nextVideo();
-        });
-        
-        $('#button_previous').click(function() {
-            player.previousVideo();
-        });
-        console.log('loaded');
+	$('#button_play').click(function(event) {
+		console.log('play/pause button!: ' + player.getPlayerState());
+		if(player.getPlayerState() == 1) {
+			player.pauseTrack();
+			$(this).text('play');
+		} else {
+			player.playTrack();
+			$(this).text('pause');
+		}
+	});
+	
+	$('#button_next').click(function() {
+		player.nextVideo();
+	});
+	
+	$('#button_previous').click(function() {
+		player.previousVideo();
+	});
+	console.log('loaded');
 });
 
 function onYouTubeIframeAPIReady() {
@@ -49,7 +51,10 @@ $(window).resize(setContainerDimensions);
 function setContainerDimensions(){
 	$('#container').css('height', (window.innerHeight-50) + 'px');
 	$('.bigmap').css('height', (window.innerHeight-50) + 'px');
-	$('#map_canvas').css('width', (window.innerWidth-290) + 'px');
+	if (showdetails)
+		$('#map_canvas').css('width', (window.innerWidth-290) + 'px');
+	else
+		$('#map_canvas').css('width', (window.innerWidth) + 'px');
 	return;
 }
 

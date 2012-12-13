@@ -53,6 +53,12 @@ function mapStyle() {
     ];
 }
 
+function showEventDetails(){
+	$('#event_details').css("display", "block");
+	$('#map_canvas').css('width', (window.innerWidth-290) + 'px');
+	showdetails = 1;
+}
+
 //Retrieve the location of the user (via the browser)
 function getUserLocation(){
   if (navigator.geolocation)
@@ -87,11 +93,18 @@ function createMarker(map, event){
 		title: event.name + " in " + event.venue.name,
 		icon: "http://tunemaps.com/images/icon_event.png"
 	});
+	
+	//load data into the detail window
 	google.maps.event.addListener(marker, 'click', function() {
+		showEventDetails();
 		$('#event_details_name').html(event.name);
 		$('#event_details_location').html(event.venue.name);
 		$('#event_details img').attr("src", event.image);
 		$('#event_details_datetime').html(event.datetime);
+		var artists = "";
+		for(artist in event.attendingArtists){
+			artists += "<a href=\"\">" + event.attendingArtists[artist].name + "</a><br />";
+		}
 		$('#event_details_artists').html(artists);
 	});
 	return marker;
