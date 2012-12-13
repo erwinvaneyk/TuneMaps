@@ -17,3 +17,7 @@ tune_maps_service_event:
 tune_maps_service_trackinfo:
     pattern:  /service/trackinfo
     defaults: {_controller: TuneMapsServiceBundle:Service:trackinfo }
+    
+tune_maps_service_songplayed:
+    pattern:  /service/songplayed/{userid}/{songid}
+    defaults: {_controller: TuneMapsServiceBundle:Service:songPlayed }

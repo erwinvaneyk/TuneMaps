@@ -32,6 +32,10 @@ class Song
 	 */
 	protected $rankings;
 	
+        public function __construct($id = 0) {
+            $this->id = $id;
+        }
+        
 	public function getId() {
 		return $this->id;
 	}

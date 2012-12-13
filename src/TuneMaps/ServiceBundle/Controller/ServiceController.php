@@ -21,6 +21,22 @@ class ServiceController extends Controller
     {
             return $this->renderPlayer($request, $track);
     }
+    
+    //register a song played
+    public function songPlayedAction(Request $request,$userid,$songid) {
+            $json = array('status' => 'ok');    
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                if(($sp = $em->getRepository('TuneMaps\RecommendationBundle\Entity\SongPlayed')->findOneBy(array('song' => $songid, 'user' => $userid))) == null)
+                    $sp = new Entity\SongPlayed($em->getReference('TuneMaps\UserBundle\Entity\User', $userid),$em->getReference('TuneMaps\RecommendationBundle\Entity\Song', $songid));
+                $sp->incTimesPlayed();
+                $em->merge($sp);
+                $em->flush();
+            } catch(\Exception $e) {
+                $json =  array('error' => array('code' => 5, 'description' => 'Song or user does not exist'));
+            }
+            return JsonResponse::create($json);
+    }
 
     //returns json-object met alle relevante tracks
     public function tracksAction(Request $request, $track) {

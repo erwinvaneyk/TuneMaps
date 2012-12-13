@@ -165,4 +165,12 @@ class LastFmCrawler extends AbstractCrawler {
 		return $return;
 	}
 }
+
+/*
+userid | songid | timesListened | lastListened
+
+
+
+
+*/
 ?>
