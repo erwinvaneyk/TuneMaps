@@ -164,13 +164,90 @@ class LastFmCrawler extends AbstractCrawler {
 		echo 'corrected search!';
 		return $return;
 	}
+        
+        public function getUserInfo($username) {
+            $url = $this->apiBaseUrl . "?method=user.getinfo&user=" . urlencode($username) . "&api_key=" . 
+            urlencode($this->apiKey) . "&format=json";
+            $json = json_decode($this->getUrl($url));
+
+            if(!empty($json->{'error'})) {
+                return false;
+            }
+
+            $json = $json->{'user'};
+            $user = new \TuneMaps\UserBundle\Entity\User;
+            $user->setGender($json->{'gender'});
+            $user->setAge($json->{'age'});
+            //$user->setLocation(null); //find location of country
+            $user->setUsername($json->{'name'});
+            $user->setUsernameCanonical($json->{'name'});
+            $user->setPassword('pass_' . $json->{'name'});
+            $user->setEmail('sample_' . $json->{'name'} . '@samples.tunemaps.com');
+            $user->setEmailCanonical('sample_' . $json->{'name'} . '@samples.tunemaps.com');
+            return $user;
+        }
+        
+        public function getRecentTracks($username, $page = 1, $number = 100, $limit = 5) {
+            if($page < 0) throw new Exception("Invalid page number.");
+            $url = $this->apiBaseUrl . "?method=user.getRecentTracks&user=" . urlencode($username) . "&page=" . 
+                    urlencode($page) . "&limit=" . urlencode($limit) . "&api_key=" . urlencode($this->apiKey) . "&format=json";
+            $json = json_decode($this->getUrl($url));
+            //check if page is out of bounds
+/*            if(!empty($json->{'error'}) || $json->{'recenttracks'}->{'@attr'}->{'totalPages'} < $page) {
+                return false;
+            }*/
+            
+            //create SongPlayed objects
+            $songs = array();
+            $track = $json->{'recenttracks'}->{'track'};
+            for($i = 0; $i < count($track); $i++) {
+                if(empty($track[$i]->{'artist'}->{'mbid'}) || empty($track[$i]->{'mbid'})) continue;
+                $songs[$i] = new Entity\SongPlayed($username,$track[$i]->{'mbid'});
+                if(!empty($track->{'date'})) 
+                    $songs[$i]->setLastPlayed(new \DateTime($track->{'date'}->{'uts'}));                
+                else
+                    $songs[$i]->setLastPlayed(new \DateTime());
+            }
+            return $songs;
+        }
+        
+        public function getTopTracks($username, $page = 1, $number = 50) {
+            if($page < 0) throw new Exception("Invalid page number.");
+            $url = $this->apiBaseUrl . "?method=user.getTopTracks&user=" . urlencode($username) . "&page=" . 
+                    urlencode($page) . "&limit=" . urlencode($limit) . "&api_key=" . urlencode($this->apiKey) . "&format=json";
+            $json = json_decode($this->getUrl($url));
+            
+            //check if page is out of bounds
+            if(!empty($json->{'error'}) || $json->{'recenttracks'}->{'@attr'}->{'totalPages'} < $page) {
+                return false;
+            }
+            
+            //create SongPlayed objects
+            $songs = array();
+            $track = $json->{'recenttracks'}->{'track'};
+            for($i = 0; $i < count($track); $i++) {
+                if(empty($track->{'artist'}->{'mbid'}) || empty($track->{'mbid'})) continue;
+                $songs[$i] = new Entity\SongPlayed($track->{'artist'}->{'mbid'},$track->{'mbid'});
+                if(!empty($track->{'date'})) 
+                    $songs[$i]->setLastPlayed($track->{'date'}->{'uts'});                
+                else
+                    $songs[$i]->setLastPlayed(time());                
+            }
+            
+            return $songs;
+        }
+        
+        public function getActiveUsers($page) {
+            if($page <= 0) throw new Exception("Invalid page number.");
+            $url = 'http://www.last.fm/community/users/active?page=' . $page;
+            $rawContents = $this->getUrl($url);
+            preg_match_all("/<\/span> .+<\/a><\/strong>/",$rawContents,$users);
+            $users = preg_replace("/<\/span> (.+)<\/a><\/strong>/", "$1",$users[0]);
+            return $users; //array(string}
+        }
 }
 
 /*
 userid | songid | timesListened | lastListened
-
-
-
-
 */
 ?>

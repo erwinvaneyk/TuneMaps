@@ -56,11 +56,19 @@ class User extends BaseUser
         return $this->playcount;
     }
     
+    public function getAge() {
+        return $this->age;
+    }
+    
     public function setGender($gender) {
-        if($gender != 'm' && $gender != 'f')
-            throw new \Exception('Invalid gender provided: ' + $gender);
+        if($gender != 'm' && $gender != 'f' && $gender != 'n')
+            throw new \Exception('Invalid gender provided! ');
         else
             $this->gender = $gender;
+    }
+    
+    public function setAge($age) {
+        $this->age = $age;
     }
     
     public function setLocation(Location $loc) {

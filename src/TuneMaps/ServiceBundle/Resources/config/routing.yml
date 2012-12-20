@@ -21,3 +21,20 @@ tune_maps_service_trackinfo:
 tune_maps_service_songplayed:
     pattern:  /service/songplayed/{userid}/{songid}
     defaults: {_controller: TuneMapsServiceBundle:Service:songPlayed }
+    
+tune_maps_crawler_display:
+    pattern:  /crawler/
+    defaults: {_controller: TuneMapsServiceBundle:Crawler:display }
+
+
+tune_maps_crawler_users:
+    pattern:  /crawler/users/{page}
+    defaults: {_controller: TuneMapsServiceBundle:Crawler:users }
+    
+tune_maps_service_recentTracks:
+    pattern:  /crawler/recenttracks/{username}/{page}
+    defaults: {_controller: TuneMapsServiceBundle:Crawler:recentTracks }
+    
+tune_maps_service_topTracks:
+    pattern:  /crawler/toptracks/{username}/{page}
+    defaults: {_controller: TuneMapsServiceBundle:Crawler:topTracks }

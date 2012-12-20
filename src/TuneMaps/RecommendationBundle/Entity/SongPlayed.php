@@ -33,14 +33,15 @@ class SongPlayed implements \JsonSerializable
     public function __construct($userId, $songId) {
         $this->user = $userId;
         $this->song = $songId;
+        $this->timesPlayed = 1;
     }
     
-    public function getUserId() {
-        return $this->userId;
+    public function getUser() {
+        return $this->user;
     }
     
-    public function getSongId() {
-        return $this->songId;
+    public function getSong() {
+        return $this->song;
     }
     
     public function getTimesPlayed() {
@@ -49,6 +50,14 @@ class SongPlayed implements \JsonSerializable
     
     public function getLastPlayed() {
         return $this->lastPlayed;
+    }
+    
+    public function setSong($song) {
+        $this->song = $song;
+    }
+    
+    public function setUser($user) {
+        $this->user = $user;
     }
     
     public function setTimesPlayed($times) {
