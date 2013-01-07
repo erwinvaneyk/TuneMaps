@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @ORM\Entity
  * @ORM\Table(name="song")
- * 
- * @author Rolf Jagerman <rolf.jagerman@contended.nl>
  */
 class Song {
     

@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * 
  * @ORM\Entity
  * @ORM\Table(name="event")
- *
  */
 class Event {
     

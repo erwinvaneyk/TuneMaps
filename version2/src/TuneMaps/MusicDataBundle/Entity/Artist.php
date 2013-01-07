@@ -10,8 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * 
  * @ORM\Entity
  * @ORM\Table(name="artist")
- * 
- * @author Rolf Jagerman <rolf.jagerman@contended.nl>
  */
 class Artist {
     

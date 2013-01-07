@@ -5,6 +5,8 @@ namespace TuneMaps\MusicDataBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * A venue
+ * 
  * @ORM\Entity
  * @ORM\Table(name="venue")
  */
