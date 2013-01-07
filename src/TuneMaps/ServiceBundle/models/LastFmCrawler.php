@@ -197,6 +197,10 @@ class LastFmCrawler extends AbstractCrawler {
                 return false;
             }*/
             
+            if(empty($json->{'recenttracks'}->{'track'})) {
+                return false;
+            }
+            
             //create SongPlayed objects
             $songs = array();
             $track = $json->{'recenttracks'}->{'track'};
