@@ -25,6 +25,9 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/.*\.css, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/.*\.js, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*\.jpg, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*\.jpeg, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*\.png, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/, role: ROLE_USER }
 
