@@ -10,6 +10,7 @@ use TuneMaps\ServiceBundle\Models;
 
 class CrawlerController extends Controller {
     
+    //werkt goed
     public function usersAction(Request $request,$page) {
         $json = array('status' => 'ok');
         $cr = new Models\LastFmCrawler();
@@ -38,9 +39,10 @@ class CrawlerController extends Controller {
         return JsonResponse::create($json);
     }
     
+    //errors
     public function recentTracksAction(Request $request,$username,$page) {
         $cr = new Models\LastFmCrawler();
-        //get data
+        //get data (array of SongPlayed-objects)
         if(!($recentTracks = $cr->getRecentTracks($username, $page))) {
             $json =  array('error' => array('code' => 8, 'description' => 'No recent tracks found for user: ' . $username . '!'));
         } else {
@@ -48,21 +50,24 @@ class CrawlerController extends Controller {
             $count = 0;
             $em = $this->getDoctrine()->getEntityManager();
             foreach($recentTracks as $track) {
+                //haal een referentie op als de song al in de database zit
+                
                 if(($song = $em->getRepository('TuneMaps\RecommendationBundle\Entity\Song')->findOneBy(array("id" => $track->getSong()))) != null) {
-                    var_dump($song);
                     $track->setSong($song);
                 } else {
-                    var_dump($song);
+                    //zo niet creer nieuw song object, en gebruik 
                     $song = $cr->trackInfo(array("mbid" => $track->getSong()));
-                    var_dump($song);
+                    if(!$song) continue;
+                    $em->merge($song->getArtist());
                     $em->merge($song);
                     $track->setSong($song);
                 }
                 $track->setUser($em->getReference('TuneMaps\UserBundle\Entity\User',$this->getUser()->getId()));
                 $em->merge($track);
                 $count++;
+                $em->flush();
             }
-            $em->flush();
+            //$em->flush();
             $json = array('status' => 'ok', 'inserts' => $count);
         }
         return JsonResponse::create($json);
@@ -85,7 +90,7 @@ class CrawlerController extends Controller {
     
     public function displayAction(Request $request) {
         $cr = new Models\LastFmCrawler();
-        var_dump($cr->getRecentTracks("jb"));
+        //var_dump($cr->getRecentTracks("jb"));
         
         return $this->render('TuneMapsServiceBundle:Crawler:display.html.twig', array());
     }

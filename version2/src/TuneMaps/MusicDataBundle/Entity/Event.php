@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="event")
  *
- * @author Rolf Jagerman <rolf.jagerman@contended.nl>
  */
 class Event {
     
