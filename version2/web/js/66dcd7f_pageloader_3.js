@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#navigation a').each(function(index, item) {
+    $('#navigation a,#logo a').each(function(index, item) {
         if($(item).attr('href').match(/^#/)) {
             $(item).click(function(event) {
                 event.preventDefault();

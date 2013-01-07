@@ -27,7 +27,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [TuneMapsFrontBundle]
+    bundles:        [TuneMapsFrontBundle, TuneMapsUserBundle, FOSUserBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
