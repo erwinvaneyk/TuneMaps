@@ -4,8 +4,6 @@ namespace TuneMaps\CrawlerBundle\Entity;
 
 /**
  * An abstract crawler
- *
- * @author Rolf Jagerman <rolf.jagerman@contended.nl>
  */
 abstract class Crawler {
     

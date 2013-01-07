@@ -10,8 +10,6 @@ use TuneMaps\MusicDataBundle\Entity\Venue;
 
 /**
  * A crawler for Last FM
- *
- * @author Rolf Jagerman <rolf.jagerman@contended.nl>
  */
 class LastFMCrawler extends Crawler {
     

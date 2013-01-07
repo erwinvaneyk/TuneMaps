@@ -4,8 +4,6 @@ namespace TuneMaps\CrawlerBundle\Entity;
 
 /**
  * A crawler for Youtube
- *
- * @author Rolf Jagerman <rolf.jagerman@contended.nl>
  */
 class YoutubeCrawler extends Crawler {
     
