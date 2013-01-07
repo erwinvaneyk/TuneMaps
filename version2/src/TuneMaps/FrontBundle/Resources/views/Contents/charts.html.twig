@@ -1,0 +1,18 @@
+{% spaceless %}
+<div id="thisweek">
+<h2>This week's chart</h2>
+<ul>
+{% for song in thisweek %}
+<li><span class="rank">{{ loop.index }}</span><span class="title">song.title</span> <span class="artist">song.artist</span></li>
+{% endfor %}
+</ul>
+</div>
+<div id="nextweek">
+<h2>Next week's predicted chart</h2>
+<ul>
+{% for song in nextweek %}
+<li><span class="rank">{{ loop.index }}</span><span class="title">song.title</span> <span class="artist">song.artist</span></li>
+{% endfor %}
+</ul>
+</div>
+{% endspaceless %}

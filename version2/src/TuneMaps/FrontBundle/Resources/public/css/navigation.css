@@ -1,0 +1,29 @@
+div#navigation ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	margin-left: 0px;
+	margin-bottom: 0px;
+}
+div#navigation ul li {
+	display: block;
+	float: left;
+	margin: 0px;
+	padding: 0px;
+}
+div#navigation ul li a {
+	margin: 0px 10px;
+	line-height: 64px;
+	padding: 6px 12px;
+	/*border-radius: 6px;*/
+	text-decoration: none;
+	color: #333333;
+	font-family: 'Open Sans',sans-serif;
+	font-size: 14px;
+}
+div#navigation ul li a.selected {
+	background: #ffffff;
+}
+div#navigation ul li a:hover {
+	background: #ffffff;
+}

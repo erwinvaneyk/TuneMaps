@@ -1,0 +1,12 @@
+{% spaceless %}
+<h1>Search results</h1>
+<p> </p>
+<ul id="searchresults">
+{% for song in songs %}
+<li class="song" id="{{ song.youtube }}">
+<div class="image"><img src="{% if song.image|length > 0 %}{{ song.image }}{% else %}{{ asset('bundles/tunemapsfront/images/empty-64x64.png') }}{% endif %}" alt="" /></div>
+<div class="description"><div class="title">{{ song.title }}</div><div class="artist">{{ song.artist }}</div></div>
+</li>
+{% endfor %}
+</ul>
+{% endspaceless %}

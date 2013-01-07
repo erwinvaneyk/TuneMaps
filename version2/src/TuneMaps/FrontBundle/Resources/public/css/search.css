@@ -1,0 +1,49 @@
+ul#searchresults {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid #cdcdcd;
+}
+ul#searchresults li {
+    padding: 8px;
+    border-bottom: 1px solid #cdcdcd;
+}
+ul#searchresults li:hover {
+    cursor: pointer;
+    background: #eeeeee;
+}
+ul#searchresults li div.image {
+    display: inline-block;
+    vertical-align: top;
+    width: 64px;
+    height: 64px;
+}
+ul#searchresults li div.image img {
+    max-width: 64px;
+    max-height: 64px;
+}
+ul#searchresults li div.description {
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px 16px;
+    width: 848px;
+    height: 48px;
+}
+ul#searchresults li div.title {
+    font-size: 1.2em;
+}
+ul#searchresults li div.artist {
+    color: #888888;
+}
+li.autocomplete a {
+    margin: 0px;
+    padding: 4px;
+}
+li.autocomplete {
+    margin: 0px;
+    padding: 0px;
+}
+ul.ui-autocomplete {
+    margin: 2px;
+    padding: 0px;
+}

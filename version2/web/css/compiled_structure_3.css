@@ -1,0 +1,88 @@
+html, body {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	background-color: #fbfbfb;
+	background-image: url('../../bundles/tunemapsfront/images/background.png');
+	background-repeat: repeat-y;
+	background-position:center; 
+}
+div#container {
+	min-height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+div#header {
+	min-width: 962px;
+	height: 65px;
+	background-color: #eeeeee;
+	border-bottom: 1px solid #dcdcdc;
+}
+div#headercontent {
+	width: 962px;
+	margin: 0px auto;
+    position: relative;
+}
+div#logo {
+	display: inline-block;
+    vertical-align: top;
+    width: 220px;
+}
+div#search {
+    position: absolute;
+    display: inline-block;
+    vertical-align: top;
+    left: 220px;
+    right: 263px;
+    margin: 0px 40px 0px 0px;
+}
+div#search input {
+    height: 24px;
+    width: 100%;
+    margin: 15px 16px 16px 16px;
+    padding: 4px;
+    border: 1px solid #eeeeee;
+    background: #fbfbfb;
+    font-family: 'Open Sans';
+    font-size: 1em;
+}
+div#search input:focus {
+    background: #ffffff;
+}
+div#navigation {
+    position: absolute;
+	display: inline-block;
+    vertical-align: top;
+    right: 0px;
+}
+div#main {
+	width: 962px;
+	margin: 0px auto;
+	border-top: 16px solid #fbfbfb;
+}
+div#content {
+	width: 960px;
+	margin: 0px 1px;
+	padding: 0px;
+	background: #ffffff;
+	border-top: 1px solid #dcdcdc;
+	padding-bottom: 42px;
+}
+div#footer {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	height: 32px;
+	background-color: #eeeeee;
+	border-top: 1px solid #dcdcdc;
+	z-index:150;
+}
+div#footercontent {
+	width: 962px;
+	margin: 0px auto;
+}
+div#spinner {
+    margin: 32px auto;
+    width: 128px;
+    height: 128px;
+}

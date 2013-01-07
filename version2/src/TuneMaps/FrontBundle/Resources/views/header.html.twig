@@ -1,0 +1,17 @@
+<div id="headercontent">
+<div id="logo">
+<img src="{{ asset('bundles/tunemapsfront/images/logo.png') }}" alt="TuneMaps" />
+</div>
+<div id="search">
+<form action="{{ path('search', {'query':''}) }}">
+<input type="text" name="query"></input>
+</form>
+</div>
+<div id="navigation">
+<ul>
+<li><a href="#{{ path('events') }}">Events</a></li>
+<li><a href="#{{ path('charts') }}">Charts</a></li>
+<li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+</ul>
+</div>
+</div>

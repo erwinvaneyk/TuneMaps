@@ -1,0 +1,50 @@
+{% extends 'TuneMapsFrontBundle::base.html.twig' %}
+
+{% block css %}
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css' />
+{% stylesheets
+    'bundles/tunemapsfront/css/reset.css'
+    'bundles/tunemapsfront/css/style.css'
+    'bundles/tunemapsfront/css/structure.css'
+    'bundles/tunemapsfront/css/navigation.css'
+    'bundles/tunemapsfront/css/events.css'
+    'bundles/tunemapsfront/css/search.css'
+    'bundles/tunemapsplayer/css/musicplayer.css'
+    'bundles/tunemapsfront/css/custom-theme/jquery-ui-1.9.2.custom.min.css'
+    output='css/compiled.css'
+    filter='cssrewrite' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+{% endstylesheets %}
+{% endblock %}
+
+{% block js %}
+<script src="http://fgnass.github.com/spin.js/dist/spin.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+{% javascripts
+    "bundles/tunemapsfront/js/jquery-1.8.3.js"
+    "bundles/tunemapsfront/js/jquery-ui-1.9.2.custom.min.js"
+    "bundles/tunemapsfront/js/pageloader.js"
+    "bundles/tunemapsfront/js/search.js"
+    "bundles/tunemapsfront/js/event.js"
+    "bundles/tunemapsplayer/js/swfobject.js"
+    "bundles/tunemapsplayer/js/musicplayer.js" %}
+<script src="{{ asset_url }}" type="text/javascript"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+<div id="container">
+<div id="header">
+{% include 'TuneMapsFrontBundle::header.html.twig' %}
+</div>
+<div id="main">
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+</div>
+</div>
+<div id="footer">
+{% include 'TuneMapsFrontBundle::footer.html.twig' %}
+</div>
+{% endblock %}

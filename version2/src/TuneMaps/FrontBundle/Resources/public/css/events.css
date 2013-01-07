@@ -1,0 +1,66 @@
+div#event {
+    width: 700px;
+    display: inline-block;
+    vertical-align: top;
+}
+div#eventlist {
+    width: 260px;
+    display: inline-block;
+    vertical-align: top;
+}
+li.event:hover {
+    cursor: pointer;
+}
+div#eventlist ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+div#eventlist ul li {
+    width: 259px;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: 1px solid #dcdcdc;
+    border-left: 1px solid #dcdcdc;
+}
+div#eventlist ul li div.location {
+    display: none;
+}
+div#eventlist ul li span.eventdate {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 40px;
+    height: 48px;
+}
+div#eventlist ul li div.dateday {
+    width: 40px;
+    height: 22px;
+    line-height: 26px;
+}
+div#eventlist ul li div.datemonth {
+    width: 40px;
+    height: 26px;
+    line-height: 22px;
+}
+div#eventlist ul li span.eventtitle {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 8px;
+    line-height: 48px;
+    font-size: 1.1em;
+    width: 200px;
+    height: 48px;
+    overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+div#eventlist ul li.selected span.eventtitle {
+    font-weight: bold;
+}
+div#map {
+    margin: 1px;
+    padding: 0px;
+    width: 698px;
+    height: 320px;
+}
