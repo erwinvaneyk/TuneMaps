@@ -26,7 +26,7 @@ class PlayerController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         if(($artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artist_name))) != null) {
             if(($song = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Song')->findOneBy(array('title' => $tracktitle, 'artist' => $artist))) != null) {
-                $json = array('artist' => $artist_name, 'title' => $title, 'youtube' => $song->{'youtube'});
+                $json = array('artist' => $artist_name, 'title' => $tracktitle, 'youtube' => $song->{'youtube'});
             }
         }
         
@@ -35,7 +35,7 @@ class PlayerController extends Controller
             //retrieve  code from youtube
             $youtubeCrawler = new YoutubeCrawler();
             $youtube = $youtubeCrawler->getFirstVideo($artist_name . ' ' . $tracktitle);
-            $json = array('artist' => $artist_name, 'title' => $title, 'youtube' => $youtube);
+            $json = array('artist' => $artist_name, 'title' => $tracktitle, 'youtube' => $youtube);
             //save song/artist
         }
         
