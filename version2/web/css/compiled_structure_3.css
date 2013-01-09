@@ -3,9 +3,7 @@ html, body {
 	padding: 0px;
 	margin: 0px;
 	background-color: #fbfbfb;
-	background-image: url('../../bundles/tunemapsfront/images/background.png');
-	background-repeat: repeat-y;
-	background-position:center; 
+	background: url('../../bundles/tunemapsfront/images/bg_light.png');
 }
 div#container {
 	min-height: 100%;
@@ -13,10 +11,21 @@ div#container {
 	margin: 0px;
 }
 div#header {
+	position: relative;
 	min-width: 962px;
-	height: 65px;
-	background-color: #eeeeee;
-	border-bottom: 1px solid #dcdcdc;
+	color: #fff;
+	font-family: arial, serif;
+	padding: 0 14px 0 14px;
+	height: 50px;
+	background: -moz-linear-gradient(top, #606c88 0%, #3f4c6b 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#606c88), color-stop(100%,#3f4c6b)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #606c88 0%,#3f4c6b 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
+	box-shadow: 0 0 5px 2px #888;
+	z-index: 5;
 }
 div#headercontent {
 	width: 962px;
@@ -26,20 +35,26 @@ div#headercontent {
 div#logo {
 	display: inline-block;
     vertical-align: top;
-    width: 220px;
+    width: 250px;
 }
 div#search {
-    position: absolute;
     display: inline-block;
-    vertical-align: top;
     left: 220px;
-    right: 263px;
-    margin: 0px 40px 0px 0px;
+	border: solid 1px #ccc;
+	width: 300px;
+	height: 20px;
+	border-radius: 10px;
+	margin-left: -5px;
+	padding: 5px;
+	margin-top: 9px;
+	outline: none;
+    background: url('../../bundles/tunemapsfront/images/search.png') no-repeat 10px 9px #fff;
+	text-indent: 20px; 
+	box-shadow:inset 0 0 10px #ccc;
 }
 div#search input {
     height: 24px;
     width: 100%;
-    margin: 15px 16px 16px 16px;
     padding: 4px;
     border: 1px solid #eeeeee;
     background: #fbfbfb;
@@ -58,7 +73,6 @@ div#navigation {
 div#main {
 	width: 962px;
 	margin: 0px auto;
-	border-top: 16px solid #fbfbfb;
 }
 div#content {
 	width: 960px;

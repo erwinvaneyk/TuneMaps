@@ -2,7 +2,7 @@
 @import url(http://fonts.googleapis.com/css?family=Average+Sans);
 
 body{
-	background: url('../../bundles/tunemapsuser/images/festival_bg.jpg') no-repeat;
+	background: url('../bundles/tunemapsuser/images/festival_bg.jpg') no-repeat;
 	background-size: 100%;
 	margin: 0;
 }
