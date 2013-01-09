@@ -3,8 +3,8 @@
  */
 var markers = [];
 var map = 0;
-var eventIcon = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
-var eventSelectedIcon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+var eventIcon = "../bundles/tunemapsfront/images/icon_event.png";
+var eventSelectedIcon = "../bundles/tunemapsfront/images/icon_event_active.png";
 
 /**
  * Page load function

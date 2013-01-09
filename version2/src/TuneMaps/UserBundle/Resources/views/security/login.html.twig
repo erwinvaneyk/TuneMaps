@@ -5,7 +5,11 @@
     <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
 {% endif %}
 
-<form action="{{ path("fos_user_security_check") }}" method="post">
+<div id="logo">
+	<img src="../bundles/tunemapsuser/images/logo-big.png" alt="logo" />
+</div>
+
+<form action="{{ path("fos_user_security_check") }}" method="post" id="form">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
     <div>
@@ -19,8 +23,8 @@
     </div>
     
     <div>
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
     <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="checkbox" id="remember_me" class="remember_me" name="_remember_me" value="on" />
     </div>
     
     <div>
