@@ -157,6 +157,29 @@ class LastFMCrawler extends Crawler {
         }
     }
     
+    // required: mbid or (artist and track)
+    public function artistInfo(array $args) {
+        if(!empty($args['mbid']) || !empty($args['artist'])) {
+            $url = $this->getUrl('artist.getInfo', $args);
+            $json = json_decode($this->getExternalContents($url));
+
+            // check if it is a valid result
+            if(!empty($json->{'error'})) {
+                return false;
+            }
+            $json = $json->{'artist'};
+
+            // build artist entity
+            $artist = new Artist();
+            $artist->setId($json->{'mbid'});
+            $artist->setName($json->{'name'});
+
+            return $artist;
+        } else {
+            return false;
+        }
+    }
+    
     
     /**
      * Obtains all metros
