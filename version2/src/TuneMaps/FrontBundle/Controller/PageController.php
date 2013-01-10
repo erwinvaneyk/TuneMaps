@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use TuneMaps\CrawlerBundle\Entity\LastFMCrawler;
+use TuneMaps\CrawlerBundle\Entity\EventRecommender;
 use TuneMaps\MusicDataBundle\Entity\Event;
 
 class PageController extends Controller
@@ -29,9 +30,11 @@ class PageController extends Controller
         $user= $this->get('security.context')->getToken()->getUser();
         
         $lastFmCrawler = new LastFMCrawler();
+        $eventRecommender = new EventRecommender();
+        $recommendedEvents = $eventRecommender->getEvents(10, $user->getLastLocation());
         $events = $lastFmCrawler->getEvents($user->getLastLocation());
         
-        return array('events' => $events);
+        return array('events' => $events, 'recommendedEvents' => $recommendedEvents);
     }
     
     /**
