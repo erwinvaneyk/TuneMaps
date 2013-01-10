@@ -41,6 +41,17 @@ class PageController extends Controller
     public function chartsAction()
     {
         
-        return array();
+		$lastFmCrawler = new LastFmCrawler();
+		$chart = $lastFmCrawler->getChart('Netherlands', 'Amsterdam', 1356868800);
+		$predictedIndices = array(12, 9, 6, 11, 7, 3, 10, 13, 5, 8);
+		
+		$thisweek = array();
+		$nextweek = array();
+		for($i = 0; $i<10; $i++) {
+			$thisweek[] = $chart[$i];
+			$nextweek[] = $chart[$predictedIndices[$i]];
+		}
+		
+        return array('thisweek' => $thisweek, 'nextweek' => $nextweek);
     }
 }
