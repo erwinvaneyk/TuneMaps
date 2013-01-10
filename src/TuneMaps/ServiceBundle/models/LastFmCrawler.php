@@ -133,11 +133,15 @@ class LastFmCrawler extends AbstractCrawler {
                     return false;
                 }
                 $json = $json->{'track'};
-                $track = new Entity\Song();
-                $track->setId($json->{'mbid'});
+                
+                //build artist entity
                 $artist = new Entity\Artist();
                 $artist->setId($json->{'artist'}->{'mbid'});
                 $artist->setName($json->{'artist'}->{'name'});
+                
+                //build song entity
+                $track = new Entity\Song();
+                $track->setId($json->{'mbid'});
                 $track->setArtist($artist);
                 $track->setTitle($json->{'name'});
 		

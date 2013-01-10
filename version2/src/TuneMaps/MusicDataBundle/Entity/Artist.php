@@ -1,9 +1,7 @@
 <?php
-
 namespace TuneMaps\MusicDataBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * An artist
@@ -18,7 +16,6 @@ class Artist {
      * 
      * @ORM\Id
      * @ORM\Column(type="string", length=40)
-     * @ORM\GeneratedValue(strategy="AUTO")
      * 
      * @var string
      */
@@ -50,15 +47,7 @@ class Artist {
      * @var array
 	 */
 	protected $events;
-    
-    /**
-     * Creates a new artist
-     */
-    public function __construct() {
-        $this->songs = new ArrayCollection();
-        $this->events = new ArrayCollection();
-    }
-    
+        
     /**
      * Gets the id
      * 

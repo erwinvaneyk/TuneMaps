@@ -58,7 +58,7 @@ class SearchController extends Controller
         
         $json = array();
         foreach($songs as $track) {
-            $json[] = array('artist' => $track->getArtist(), 'title' => $track->getTitle(), 'youtube' => $track->getYoutube());
+            $json[] = array('artist' => $track->getArtist()->getName(), 'title' => $track->getTitle(), 'youtube' => $track->getYoutube());
         }
         
         return new JsonResponse($json);

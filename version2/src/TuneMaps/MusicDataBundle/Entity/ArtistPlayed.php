@@ -1,10 +1,10 @@
 <?php
-namespace TuneMaps\RecommendationBundle\Entity;
+namespace TuneMaps\MusicDataBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
 * @ORM\Entity
-* @ORM\Table(name="tunemaps_songplayed")
+* @ORM\Table(name="artist_played")
 */
 class ArtistPlayed 
 {
@@ -74,10 +74,6 @@ class ArtistPlayed
     
     public function incTimesPlayed($add = 1) {
         $this->timesPlayed += $add;
-    }
-        
-    public function jsonSerialize() {
-        return (object) get_object_vars($this);
     }
 }
 ?>
