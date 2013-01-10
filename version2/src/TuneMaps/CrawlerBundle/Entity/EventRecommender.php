@@ -15,12 +15,43 @@ use TuneMaps\MusicDataBundle\Entity\Venue;
  */
 class EventRecommender {
     
-    /**
-     * get
-     */
-    protected function getEvents() {
-        return null;
-    }
-    
+	/*
+	 * @param n number of events
+	 * @param location of user
+	 * @return list of n best matching events given location
+	 */
+	public function getEvents($n, $location){
+		
+		$crawler = new LastFMCrawler();
+		$events = $crawler->getEvents($location);
+		$user = $this->get('security.context')->getToken()->getUser();
+		
+		foreach($events as $event){
+			//get all attending artists
+			$artists = $event->getAttendingArtists();
+			
+			$playcount = 0;
+			foreach($artists as $artistname){
+				//get playcount for an artist for this user
+				$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artistname));
+				$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist, 'user' => $user));
+
+				//get playcount
+				if($artistPlayed != null) {
+					$playcount = $artistPlayed->getTimesPlayed();
+				}
+			}
+		}
+		
+		//sort on highest playcount
+		return 'test';
+	}
+	
+	/*
+	 * get playcount for each song of an artist
+	 */
+	protected function getPlayCount($artist){
+		return null;
+	}
 }
 ?>
