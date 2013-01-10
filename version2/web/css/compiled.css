@@ -310,8 +310,8 @@ ul.ui-autocomplete {
 }
 
 .ui-menu-item:last{
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px !important;
+	border-bottom-right-radius: 5px !important;
 }
 div#player {
     margin: 0 auto;

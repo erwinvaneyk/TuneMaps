@@ -1,5 +1,4 @@
 <?php
-
 namespace TuneMaps\CrawlerBundle\Entity;
 
 use TuneMaps\MusicDataBundle\Entity\Artist;

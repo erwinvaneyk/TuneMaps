@@ -39,9 +39,9 @@ function buttonPlayPause() {
 }
 
 function buttonPrevious() {
+    recentTracks.pop();
     var track = recentTracks.pop();
     findSongAndPlay(track[0],track[1]);
-    recentTracks.pop();
 }
 
 /**
