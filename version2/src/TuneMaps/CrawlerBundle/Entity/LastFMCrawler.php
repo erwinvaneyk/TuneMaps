@@ -1,5 +1,4 @@
 <?php
-
 namespace TuneMaps\CrawlerBundle\Entity;
 
 use TuneMaps\MusicDataBundle\Entity\Artist;
@@ -50,7 +49,7 @@ class LastFMCrawler extends Crawler {
      * @param int $page The page number to start the search at
      * @param int $resultsPerPage The number of results per page
      */
-    public function searchTrack($query, $page, $resultsPerPage) {
+    public function searchTrack($query, $page, $resultsPerPage,$findYoutubeUri = false) {
         
         // Create the API url
         $url = $this->getUrl('track.search', array('track' => $query, 'page' => $page, 'limit' => $resultsPerPage));
@@ -76,7 +75,12 @@ class LastFMCrawler extends Crawler {
                 $song->setId($track->{'mbid'});
                 $song->setArtist($artist);
                 $song->setTitle($track->{'name'});
-                $song->setYoutube(htmlspecialchars($track->{'artist'} . ' ' . $track->{'name'}, ENT_NOQUOTES));
+                if($findYoutubeUri) {
+                    $song->setYoutube($this->getYoutubeUri($track->{'url'}));
+                } 
+                if($song->getYoutube() == null) {
+                    $song->setYoutube(htmlspecialchars($track->{'artist'} . ' ' . $track->{'name'}, ENT_NOQUOTES));
+                }
                 
                 $image = '';
                 if(array_key_exists('image', $track) && count($track->{'image'}) == 4) {
@@ -148,6 +152,29 @@ class LastFMCrawler extends Crawler {
             }
 
             return $track;
+        } else {
+            return false;
+        }
+    }
+    
+    // required: mbid or (artist and track)
+    public function artistInfo(array $args) {
+        if(!empty($args['mbid']) || !empty($args['artist'])) {
+            $url = $this->getUrl('artist.getInfo', $args);
+            $json = json_decode($this->getExternalContents($url));
+
+            // check if it is a valid result
+            if(!empty($json->{'error'})) {
+                return false;
+            }
+            $json = $json->{'artist'};
+
+            // build artist entity
+            $artist = new Artist();
+            $artist->setId($json->{'mbid'});
+            $artist->setName($json->{'name'});
+
+            return $artist;
         } else {
             return false;
         }

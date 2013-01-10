@@ -36,7 +36,7 @@ class Location {
      * @var double
 	 */
 	protected $longitude;
-    
+        
     /**
      * Gets the id
      * 

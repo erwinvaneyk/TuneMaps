@@ -1,9 +1,10 @@
 <div class="eventdescription" id="eventdescription{{ event.id }}">
-<h1>{{ event.name }}</h1>
-<h3>{{ event.datetime|date("d/m/Y | H:i") }} | {{ event.venue.name }}</h3>
-<p><strong>Featuring:</strong> 
-{% for artist in event.attendingArtists %}
-{{ artist.name }}{% if not loop.last %}, {% endif %}
-{% endfor %}
-</p>
+	<img src="" alt="" />
+	<h1>{{ event.name }}</h1>
+	<h3>{{ event.datetime|date("d/m/Y | H:i") }} | {{ event.venue.name }}</h3>
+	<p><strong>Featuring:</strong> 
+	{% for artist in event.attendingArtists %}
+	{{ artist.name }}{% if not loop.last %}, {% endif %}
+	{% endfor %}
+	</p>
 </div>

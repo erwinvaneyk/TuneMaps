@@ -16,6 +16,12 @@ tune_maps_front:
     type:     annotation
     prefix:   /
 
+tune_maps_user_controller:
+    resource: "@TuneMapsUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+
 # Internal routing configuration to handle ESI
 # ****** WARNING ******
 # This route should be enabled with caution as it can open a security vulnerability

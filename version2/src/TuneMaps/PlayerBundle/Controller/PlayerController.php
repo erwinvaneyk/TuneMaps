@@ -32,17 +32,25 @@ class PlayerController extends Controller
         }
         
         //retrieve code externally
-        if($json == null) {
+        if(empty($json)) {
             //crawl web for uri
             $crawler = new LastFMCrawler();
-            $tracks = $crawler->searchTrack($tracktitle . " " . $artist_name,1,1);
+            $tracks = $crawler->searchTrack($tracktitle . " " . $artist_name,1,1,true);
             
             //get entities of the song and artist
-            $song = $crawler->trackinfo(array("mbid" => $tracks[0]->getId()));
+            if(!$song = $crawler->trackinfo(array("mbid" => $tracks[0]->getId()))) {
+                $song = $tracks[0];
+                if(!$song->getId())
+                    $song->setId(md5($song->getTitle()));
+                if(!$song->getArtist()->getId())
+                    $song->getArtist()->setId(md5($song->getArtist()->getName()));
+            }
             
             //retrieve  code from youtube
             $youtubeCrawler = new YoutubeCrawler();
-            $song->setYoutube($youtubeCrawler->getFirstVideo($song->getArtist()->getName() . ' ' . $song->getTitle()));
+            if(count(explode(' ',$song->getYoutube()) != 1) ) {
+                $song->setYoutube($youtubeCrawler->getFirstVideo($song->getArtist()->getName() . ' ' . $song->getTitle()));
+            }
             $json = array('artist' => $song->getArtist()->getName(), 'title' => $song->getTitle(), 'youtube' => $song->getYoutube());
             
             //save entities
@@ -75,8 +83,9 @@ class PlayerController extends Controller
         if(!($playcount = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('user' => $user, 'artist' => $artist)))) {
             $playcount = new ArtistPlayed($user,$artist);
         } else {
-            #check timelimit?
-            $playcount->incTimesPlayed();
+            // check if the song wasn't played 1 min ago
+            if(($playcount->getLastPlayed()->getTimestamp() - time()) > 60)
+                $playcount->incTimesPlayed();
         }
         
         // save new playcount
