@@ -64,14 +64,3 @@ div#map {
     width: 698px;
     height: 320px;
 }
-
-.artistname{
-	color: #5CA0D1;
-	cursor: pointer;
-}
-
-.artistname:hover{
-	color: #5CA0D1;
-	text-decoration: underline;
-	cursor: pointer;
-}

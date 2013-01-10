@@ -32,14 +32,8 @@ class PageController extends Controller
         
         $lastFmCrawler = new LastFMCrawler();
         $events = $lastFmCrawler->getEvents($user->getLastLocation());
-		$artistrepository = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist');
-		$artistplayedrepository = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed');
 		
-		/*
-		 * Event Recommendation Algorithm
-		 * @author D. Eikelenboom
-		 * @return list of events
-		 */
+		//Event Recommender
 		$user = $this->get('security.context')->getToken()->getUser();
 				
 		foreach($events as $event){
@@ -49,21 +43,18 @@ class PageController extends Controller
 			$sumPlaycount = 0;
 			foreach($artists as $artist_partial){
 				//get playcount for an artist for this user
-				$artist = $artistrepository->findOneBy(array('name' => $artist_partial->getName()));
-				
-				$playcount;
+				$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artist_partial->getName()));
 				if ($artist == NULL){
-					//if artist is not in database for this user, then it has not been played yet
-					$playcount = 0;
-				}
-				else{
 					//retrieve from crawler if not in own db
-					$artistPlayed = $artistplayedrepository->findOneBy(array('artist' => $artist->getId(), 'user' => $user->getId()));
-					//get playcount
-					if($artistPlayed != null)
-						$playcount = $artistPlayed->getTimesPlayed();
+					$artist = $lastFmCrawler->artistInfo(array('artist' => $artist_partial->getName()));
 				}
-				//and sum the playcounts for the event
+				$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist->getId(), 'user' => $user->getId()));
+								       
+				//get playcount
+				$playcount = 1;
+				if($artistPlayed != null)
+					$playcount = $artistPlayed->getTimesPlayed();
+				
 				$sumPlaycount = $sumPlaycount + $playcount;
 			}
 			
@@ -73,9 +64,6 @@ class PageController extends Controller
 		
 		//sort events on rank/playcount
 		usort($events, function($a, $b){  return $a->rank < $b->rank; });
-		
-		//limit to a list of 10 events
-		$events = array_slice($events, 10);
 		
         return array('events' => $events);
     }
