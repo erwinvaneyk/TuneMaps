@@ -34,12 +34,12 @@ class EventRecommender {
 			foreach($artists as $artistname){
 				//get playcount for an artist for this user
 				$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artistname));
-				$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist, 'user' => $user));
+				/*$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist->getId(), 'user' => $user->getId()));
 
 				//get playcount
 				if($artistPlayed != null) {
 					$playcount = $artistPlayed->getTimesPlayed();
-				}
+				}*/
 			}
 		}
 		
