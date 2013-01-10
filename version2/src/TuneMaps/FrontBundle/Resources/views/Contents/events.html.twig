@@ -9,13 +9,21 @@
 </div>
 </div>
 <div id="eventlist">
+<h2>Recommended Events</h2>
 <ul>
-{% for event in events %}
-<li id="event{{ event.id }}" class="event">
-<div class="location"><span class="latitude">{{ event.venue.location.latitude }}</span><span class="longitude">{{ event.venue.location.longitude }}</span></div>
-<span class="eventdate"><div class="dateday">{{ event.datetime|date("j") }}</div><div class="datemonth">{{ event.datetime|date("M") }}</div></span><span class="eventtitle">{{ event.name }}</span>
-</li>
-{% endfor %}
+	{% for event in events %}
+	<li id="event{{ event.id }}" class="event">
+		<div class="location">
+			<span class="latitude">{{ event.venue.location.latitude }}</span>
+			<span class="longitude">{{ event.venue.location.longitude }}</span>
+		</div>
+		<span class="eventdate">
+			<div class="dateday">{{ event.datetime|date("j") }}</div>
+			<div class="datemonth">{{ event.datetime|date("M") }}</div>
+		</span>
+		<span class="eventtitle">{{ event.name }}</span>
+	</li>
+	{% endfor %}
 </ul>
 </div>
 {% endspaceless %}

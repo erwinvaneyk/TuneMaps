@@ -33,6 +33,12 @@ $(document).ready(function() {
                 var id = $(this).attr('id').substring(5);
                 selectEvent(id);
             });
+			
+			// Load tracks of artists
+			$('.artistname').click(function(){
+				//alert($(this).html());
+				loadContents($('#search form').attr('action') + '/' + $(this).html() );
+			});
             
         }
     });
