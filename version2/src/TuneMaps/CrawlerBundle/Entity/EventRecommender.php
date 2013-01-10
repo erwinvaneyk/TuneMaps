@@ -31,9 +31,15 @@ class EventRecommender {
 			$artists = $event->getAttendingArtists();
 			
 			$playcount = 0;
-			foreach($artists as $artistname){
+			foreach($artists as $artist_partial){
+				
 				//get playcount for an artist for this user
-				$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artistname));
+				//$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artistname));
+				//if ($artist == NULL){
+					//retrieve from crawler if not in own db
+					$artist = $crawler->artistInfo(array('name' => $artist_partial->getName()));
+				//}				
+				//echo $artist;
 				/*$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist->getId(), 'user' => $user->getId()));
 
 				//get playcount

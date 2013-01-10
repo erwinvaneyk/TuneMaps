@@ -205,7 +205,7 @@ class LastFMCrawler extends Crawler {
     public function getEvents($location) {
         
         // Create the API url
-        $url = $this->getUrl('geo.getevents', array('long' => $location->getLongitude(), 'lat' => $location->getLatitude(), 'limit' => 100));
+        $url = $this->getUrl('geo.getevents', array('long' => $location->getLongitude(), 'lat' => $location->getLatitude(), 'limit' => 10));
         
         // Create event objects
         $events = array();

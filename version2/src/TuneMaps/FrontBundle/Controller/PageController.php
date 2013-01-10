@@ -35,27 +35,37 @@ class PageController extends Controller
 		
 		//Event Recommender
 		$user = $this->get('security.context')->getToken()->getUser();
-		
+				
 		foreach($events as $event){
 			//get all attending artists
 			$artists = $event->getAttendingArtists();
-			$playcount = 1000;
 			
+			$sumPlaycount = 0;
 			foreach($artists as $artist_partial){
 				//get playcount for an artist for this user
 				$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artist_partial->getName()));
-				var_dump($artist);
-				/*$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist->getId(), 'user' => $user->getId()));
-				echo $artistPlayed.'<br/>';
-				
+				if ($artist == NULL){
+					//retrieve from crawler if not in own db
+					$artist = $lastFmCrawler->artistInfo(array('artist' => $artist_partial->getName()));
+				}
+				$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist->getId(), 'user' => $user->getId()));
+								       
 				//get playcount
-				if($artistPlayed != null) {
+				$playcount = 1;
+				if($artistPlayed != null)
 					$playcount = $artistPlayed->getTimesPlayed();
-				}*/
+				
+				$sumPlaycount = $sumPlaycount + $playcount;
 			}
+			
+			//total sum of playcounts for this event
+			$event->rank = $sumPlaycount;
 		}
-        
-        return array('events' => $events, 'recommendedEvents' => $playcount);
+		
+		//sort events on rank/playcount
+		usort($events, function($a, $b){  return $a->rank < $b->rank; });
+		
+        return array('events' => $events);
     }
     
     /**

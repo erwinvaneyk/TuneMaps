@@ -3,8 +3,6 @@
 <div id="map">
 </div>
 <div id="description">
-{{ recommendedEvents }}
-
 {% for event in events %}
 {% include 'TuneMapsFrontBundle:Contents:eventdescription.html.twig' with {'event':event} %}
 {% endfor %}
