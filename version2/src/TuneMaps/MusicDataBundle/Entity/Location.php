@@ -36,11 +36,6 @@ class Location {
      * @var double
 	 */
 	protected $longitude;
-    
-    public function __construct($lat,$lon) {
-        $this->setLatitude($lat);
-        $this->setLongitude($lon);
-    }    
         
     /**
      * Gets the id
