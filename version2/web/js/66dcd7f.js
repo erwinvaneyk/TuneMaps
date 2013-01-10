@@ -9722,6 +9722,7 @@ var params = {allowScriptAccess: "always"};
 var atts = {id: "youtube"};
 var player = 0;
 var recentTracks = new Array();
+var nextTracks = new Array();
 function onYouTubePlayerReady(id) {
     player = $("#youtube").get(0);
 }
@@ -9737,6 +9738,9 @@ $(document).ready(function() {
     $('div#previous').click(function() {
         buttonPrevious();
     });
+    $('div#next').click(function() {
+        buttonNext();
+    });
 });
 
 /**
@@ -9744,6 +9748,7 @@ $(document).ready(function() {
  */
 function buttonPlayPause() {
     if(player.getPlayerState() == 0 || player.getPlayerState() == 2) {
+        nextTracks.pop();
         player.playVideo();
         $('#play').hide();
         $('#pause').show();
@@ -9754,10 +9759,23 @@ function buttonPlayPause() {
     }    
 }
 
+/*
+ * finds and plays next song in the stack
+ */
+function buttonNext() {
+    var track = nextTracks.pop();
+    if(track != undefined)
+        findSongAndPlay(track[0],track[1]);
+}
+
+/*
+ * finds and plays previous song in the stack
+ */
 function buttonPrevious() {
-    recentTracks.pop();
+    nextTracks.push(recentTracks.pop());
     var track = recentTracks.pop();
-    findSongAndPlay(track[0],track[1]);
+    if(track != undefined)
+        findSongAndPlay(track[0],track[1]);
 }
 
 /**

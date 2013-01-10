@@ -24,15 +24,22 @@ class EventRecommender {
 		
 		$crawler = new LastFMCrawler();
 		$events = $crawler->getEvents($location);
+		$user = $this->get('security.context')->getToken()->getUser();
 		
 		foreach($events as $event){
 			//get all attending artists
 			$artists = $event->getAttendingArtists();
 			
 			$playcount = 0;
-			foreach($artists as $artist){
-				//sum playcounts for each track		
-				
+			foreach($artists as $artistname){
+				//get playcount for an artist for this user
+				$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artistname));
+				$artistPlayed = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('artist' => $artist, 'user' => $user));
+
+				//get playcount
+				if($artistPlayed != null) {
+					$playcount = $artistPlayed->getTimesPlayed();
+				}
 			}
 		}
 		
