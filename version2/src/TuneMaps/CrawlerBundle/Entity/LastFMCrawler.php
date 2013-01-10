@@ -219,5 +219,50 @@ class LastFMCrawler extends Crawler {
         return $events;
         
     }
+	
+	/**
+	 * Gets the chart songs for a specific metro in a specific week
+	 * 
+	 * @param string $country The country
+	 * @param string $metro The metro
+	 * @param string $week The week
+	 * 
+	 * @return array The chart
+	 */
+	public function getChart($country, $metro, $week) {
+		
+		// Create the API url
+        $url = $this->getUrl('geo.getmetrotrackchart', array('country' => $country, 'metro' => $metro, 'start' => $week, 'end' => $week + 604800));
+		
+		// Get the JSON response
+        $json = json_decode($this->getExternalContents($url));
+		
+		$songs = array();
+		foreach($json->{'toptracks'}->{'track'} as $track) {
+			//create artist entity
+			$artist = new Artist();
+			$artist->setName($track->{'artist'}->{'name'});
+			$artist->setId($track->{'artist'}->{'mbid'});
+
+			//create song
+			$song = new Song();
+			$song->setId($track->{'mbid'});
+			$song->setArtist($artist);
+			$song->setTitle($track->{'name'});
+
+			$image = '';
+			if(array_key_exists('image', $track) && count($track->{'image'}) == 4) {
+				if(count($track->{'image'}[1]->{'#text'}) > 0) {
+					$image = $track->{'image'}[1]->{'#text'};
+				}
+			}
+			$song->setImage($image);
+
+			$songs[] = $song;
+		}
+		
+		return $songs;
+		
+	}
     
 }
