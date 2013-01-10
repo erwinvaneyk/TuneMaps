@@ -38,11 +38,17 @@ class PlayerController extends Controller
             $tracks = $crawler->searchTrack($tracktitle . " " . $artist_name,1,1,true);
             
             //get entities of the song and artist
-            $song = $crawler->trackinfo(array("mbid" => $tracks[0]->getId()));
+            if(!$song = $crawler->trackinfo(array("mbid" => $tracks[0]->getId()))) {
+                $song = $tracks[0];
+                if(!$song->getId())
+                    $song->setId(md5($song->getTitle()));
+                if(!$song->getArtist()->getId())
+                    $song->getArtist()->setId(md5($song->getArtist()->getName()));
+            }
             
             //retrieve  code from youtube
             $youtubeCrawler = new YoutubeCrawler();
-            if($song->getYoutube() == null) {
+            if(count(explode(' ',$song->getYoutube()) != 1) ) {
                 $song->setYoutube($youtubeCrawler->getFirstVideo($song->getArtist()->getName() . ' ' . $song->getTitle()));
             }
             $json = array('artist' => $song->getArtist()->getName(), 'title' => $song->getTitle(), 'youtube' => $song->getYoutube());

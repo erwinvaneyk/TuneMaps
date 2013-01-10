@@ -20,7 +20,8 @@ class User extends BaseUser
     protected $id;
 
     /**
-    * @ORM\OneToOne(targetEntity="\TuneMaps\MusicDataBundle\Entity\Location")
+    * @ORM\OneToOne(targetEntity="\TuneMaps\MusicDataBundle\Entity\Location", cascade={"all"}) 
+     * 
     */
     protected $lastLocation;
     

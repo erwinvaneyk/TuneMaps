@@ -8,6 +8,7 @@ $(document).ready(function() {
         }
     });
     $('#navigation a:first').click();
+    getLocation();
 });
 function loadContents(contentUrl) {
     displaySpinner();
@@ -20,6 +21,17 @@ function loadContents(contentUrl) {
         $('#content').html('<h1 class="error">' + xhr.status + ' - ' + thrownError + '</h1>');
     });
 }
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            $.ajax({
+                url: 'location/' + position.coords.latitude + "/" + position.coords.longitude
+            });
+        });
+    } else { x.innerHTML="Geolocation is not supported by this browser."; }
+}
+
 function displaySpinner() {
     $('#content').html('<div id="spinner"></div>');
     var opts = {
