@@ -50,7 +50,7 @@ class LastFMCrawler extends Crawler {
      * @param int $page The page number to start the search at
      * @param int $resultsPerPage The number of results per page
      */
-    public function searchTrack($query, $page, $resultsPerPage) {
+    public function searchTrack($query, $page, $resultsPerPage,$findYoutubeUri = false) {
         
         // Create the API url
         $url = $this->getUrl('track.search', array('track' => $query, 'page' => $page, 'limit' => $resultsPerPage));
@@ -76,7 +76,12 @@ class LastFMCrawler extends Crawler {
                 $song->setId($track->{'mbid'});
                 $song->setArtist($artist);
                 $song->setTitle($track->{'name'});
-                $song->setYoutube(htmlspecialchars($track->{'artist'} . ' ' . $track->{'name'}, ENT_NOQUOTES));
+                if($findYoutubeUri) {
+                    $song->setYoutube($this->getYoutubeUri($track->{'url'}));
+                } 
+                if($song->getYoutube() == null) {
+                    $song->setYoutube(htmlspecialchars($track->{'artist'} . ' ' . $track->{'name'}, ENT_NOQUOTES));
+                }
                 
                 $image = '';
                 if(array_key_exists('image', $track) && count($track->{'image'}) == 4) {
