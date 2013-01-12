@@ -62,6 +62,8 @@ class Event {
      * @var array
      */
 	protected $attendingArtists;
+	
+	protected $rank;
     
     /**
      * Creates a new event
@@ -159,5 +161,23 @@ class Event {
     public function setAttendingArtists($attendingArtists) {
         $this->attendingArtists = $attendingArtists;
     }
+	
+	/**
+     * Gets the rank
+     * 
+     * @param int The rank
+     */
+	public function getRank() {
+		return $this->rank;
+	}
+	
+	/**
+     * Sets the rank
+     * 
+     * @param int $rank The rank
+     */
+	public function setRank($rank) {
+		$this->rank = $rank;
+	}
     
 }

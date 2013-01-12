@@ -76,4 +76,3 @@ class ArtistPlayed
         $this->timesPlayed += $add;
     }
 }
-?>
