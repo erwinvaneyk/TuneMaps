@@ -57,6 +57,14 @@ class Song {
      * @var string
      */
     protected $youtube;
+	
+	/**
+	 * Creates a song
+	 */
+	public function __construct() {
+		$this->image = '';
+		$this->youtube = '';
+	}
     
     /**
      * Gets the id

@@ -22,77 +22,113 @@ class PlayerController extends Controller
      * @Route("/player/{artist_name}/{tracktitle}", name="youtubecode")
      */
     function youtubeCodeAction($artist_name, $tracktitle) {
-        //try to find code internally
-        $json = null;
-        $em = $this->getDoctrine()->getEntityManager();
-        if(($artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artist_name))) != null) {
-            if(($song = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Song')->findOneBy(array('title' => $tracktitle, 'artist' => $artist))) != null) {
-                $json = array('artist' => $song->getArtist()->getName(), 'title' => $song->getTitle(), 'youtube' => $song->getYoutube());
-            }
-        }
-        
-        //retrieve code externally
-        if(empty($json)) {
-            //crawl web for uri
-            $crawler = new LastFMCrawler();
-            $tracks = $crawler->searchTrack($tracktitle . " " . $artist_name,1,1,true);
-            
-            //get entities of the song and artist
-            if(!$song = $crawler->trackinfo(array("mbid" => $tracks[0]->getId()))) {
-                $song = $tracks[0];
-                if(!$song->getId())
-                    $song->setId(md5($song->getTitle()));
-                if(!$song->getArtist()->getId())
-                    $song->getArtist()->setId(md5($song->getArtist()->getName()));
-            }
-            
-            //retrieve  code from youtube
-            $youtubeCrawler = new YoutubeCrawler();
-            if(count(explode(' ',$song->getYoutube()) != 1) ) {
-                $song->setYoutube($youtubeCrawler->getFirstVideo($song->getArtist()->getName() . ' ' . $song->getTitle()));
-            }
-            $json = array('artist' => $song->getArtist()->getName(), 'title' => $song->getTitle(), 'youtube' => $song->getYoutube());
-            
-            //save entities
-            $em->merge($song->getArtist());
-            $em->merge($song);
-            $em->flush();
-        }
-        
-        // adjust playcount of the artist
-        $this->updatePlayCount($song->getArtist()->getId());
-        
-        //return result
-        return new JsonResponse($json);
-    }
-    
-    // requires: artist mbID
-    // adds 1 to the playcount of the current artist
-    private function updatePlayCount($artist_mbid) {
-        // get user and connection
-        $user = $this->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getEntityManager();
-        $artist = $em->getReference('TuneMaps\MusicDataBundle\Entity\Artist',$artist_mbid);
-        
-        // retrieve artist
-        if(!($artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('id' => $artist_mbid)))) {
-            return false;
-        }
-       
-        // retrieve previous playcount or create new
-        if(!($playcount = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('user' => $user, 'artist' => $artist)))) {
-            $playcount = new ArtistPlayed($user,$artist);
-        } else {
-            // check if the song wasn't played 1 min ago
-            if((time() - $playcount->getLastPlayed()->getTimestamp()) > 60)
-                $playcount->incTimesPlayed();
-        }
-        
-        // save new playcount
-        $em->persist($playcount);
-        $em->flush();
-        
-        return true;
-    }
+	
+		// Initialize empty value
+		$json = array('artist' => $artist_name, 'title' => $tracktitle, 'youtube' => '');
+	
+		// Find song
+		$song = $this->getSongFromDatabase($artist_name, $tracktitle);
+		if($song == null) {
+			$song = $this->getSongFromLastFM($artist_name, $tracktitle);
+		}
+		
+		// Song found, get the youtube URI and store the song object
+		if($song != null) {
+		
+			// Get the youtube URI if it does not exist
+			if(!$song->getYoutube()) {
+				$youtubeCrawler = new YoutubeCrawler();
+				$youtube = $youtubeCrawler->getFirstVideo($song->getArtist()->getName() . ' ' . $song->getTitle());
+				$song->setYoutube($youtube);
+			}
+			
+			// Fill the json array with correct information
+			$json['artist'] = $song->getArtist()->getName();
+			$json['title'] = $song->getTitle();
+			$json['youtube'] = $song->getYoutube();
+			
+			// Store the objects in the database
+			$em = $this->getDoctrine()->getEntityManager();
+			$em->merge($song->getArtist());
+			$em->merge($song);
+			$em->flush();
+			
+			// If there is a youtube link, increment the playcount
+			if(strlen($song->getYoutube()) > 0) {
+				$this->incrementPlayCount($song->getArtist());
+			}
+			
+		}
+		
+		// Return the response
+		return new JsonResponse($json);
+		
+	}
+	
+	/**
+	 * Increments the play count for given artist
+	 * 
+	 * @param Artist $artist The artist
+	 */
+	public function incrementPlayCount($artist) {
+	
+		// Get the logged in user
+		$user = $this->get('security.context')->getToken()->getUser();
+		
+		// Get the current play count for given artist
+		$em = $this->getDoctrine()->getEntityManager();
+		$playcount = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('user' => $user, 'artist' => $artist));
+		
+		// Check if a playcount exists
+		if($playcount == null) {
+			
+			// If there is no play count for this artist yet, create it
+			$playcount = new ArtistPlayed($user, $artist);
+			
+		} else {
+		
+			// Increment the play count if at least a minute has passed since the last listening
+			if((time() - $playcount->getLastPlayed()->getTimestamp()) > 60) {
+				$playcount->incTimesPlayed();
+			}
+			
+		}
+		
+		// Store the playcount
+		$em->merge($playcount);
+		$em->flush();
+		
+	}
+	
+	/**
+	 * Attempts to get the song from the database
+	 * 
+	 * @param string $artistname The artist's name
+	 * @param string $title The title
+	 * @return Song The song
+	 */
+	protected function getSongFromDatabase($artistname, $title) {
+		$em = $this->getDoctrine()->getEntityManager();
+		$youtubeUri = '';
+		$artist = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('name' => $artistname));
+		$song = null;
+		if($artist != null) {
+			$song = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Song')->findOneBy(array('title' => $title, 'artist' => $artist));
+		}
+		return $song;
+	}
+	
+	/**
+	 * Gets the song from the last fm API
+	 * 
+	 * @param string $artist The artist
+	 * @param string $title The title
+	 * @return Song The song
+	 */
+	protected function getSongFromLastFM($artist, $title) {
+		$lastFmCrawler = new LastFMCrawler();
+		$song = $lastFmCrawler->trackInformation($artist, $title);
+		return $song;
+	}
     
 }

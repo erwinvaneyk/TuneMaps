@@ -49,7 +49,7 @@ class LastFMCrawler extends Crawler {
      * @param int $page The page number to start the search at
      * @param int $resultsPerPage The number of results per page
      */
-    public function searchTrack($query, $page, $resultsPerPage,$findYoutubeUri = false) {
+    public function searchTrack($query, $page, $resultsPerPage, $findYoutubeUri = false) {
         
         // Create the API url
         $url = $this->getUrl('track.search', array('track' => $query, 'page' => $page, 'limit' => $resultsPerPage));
@@ -98,6 +98,50 @@ class LastFMCrawler extends Crawler {
         return $songs;
         
     }
+	
+	/**
+	 * Attempts to find the track information of given song
+	 * 
+	 * @param string $artist The artist name
+	 * @param string $title The song title
+	 * @return Song The song object or null if nothing could be found
+	 */
+	public function trackInformation($artist, $title) {
+	
+		// Create the API url and retrieve the information
+		$url = $this->getUrl('track.getInfo', array('artist' => $artist, 'track' => $title));
+		$json = json_decode($this->getExternalContents($url));
+		$song = null;
+		
+		// No error occured, the track was found
+		if(!array_key_exists('error', $json)) {
+			
+			// Create the appropriate objects
+			$song = new Song();
+			$song->setId($json->{'track'}->{'mbid'});
+			$song->setTitle($json->{'track'}->{'name'});
+			
+			$artist = new Artist();
+			$artist->setId($json->{'track'}->{'artist'}->{'mbid'});
+			$artist->setName($json->{'track'}->{'artist'}->{'name'});
+			
+			if($artist->getId() == '') {
+				$artist->setId(md5($artist->getName()));
+			}
+			if($song->getId() == '') {
+				$song->setId(md5($song->getTitle()));
+			}
+			
+			$song->setArtist($artist);
+			
+		}
+		
+		// Return the result
+		return $song;
+		
+	}
+	
+	
     // geeft de youtube uri terug van de video op een last.fm-pagina.
     // input: 	last.fm track-url (bijv. http://www.last.fm/music/Rudimental/_/Feel+The+Love+-+Feat.+John+Newman)
     // output: 	youtube video uri (bijv. oABEGc8Dus0)
