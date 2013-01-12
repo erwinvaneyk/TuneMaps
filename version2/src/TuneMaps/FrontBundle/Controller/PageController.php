@@ -75,7 +75,7 @@ class PageController extends Controller
 		usort($events, function($a, $b){  return $a->rank < $b->rank; });
 		
 		//limit to a list of 10 events
-		$events = array_slice($events, 10);
+		$events = array_slice($events, 0, 10);
 		
         return array('events' => $events);
     }
