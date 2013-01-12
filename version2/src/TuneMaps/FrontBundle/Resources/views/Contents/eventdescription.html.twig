@@ -8,6 +8,9 @@
 	{% endfor %}
 	</p>
 	<p>
-	Playcount: {{ event.rank }}
+	{% if event.rank > 0 %}
+		This recommendation is based on {{ event.rank }} of your song plays, featuring
+		artists playing at this event, and your current location. 
+	{% endif %}
 	</p>
 </div>
