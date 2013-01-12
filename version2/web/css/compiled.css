@@ -314,6 +314,57 @@ ul.ui-autocomplete {
 	border-bottom-left-radius: 5px !important;
 	border-bottom-right-radius: 5px !important;
 }
+ol.chart {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid #cdcdcd;
+}
+ol.chart li {
+    padding: 8px;
+    border-bottom: 1px solid #cdcdcd;
+}
+ol.chart li:hover {
+    cursor: pointer;
+    background: #eeeeee;
+}
+ol.chart li div.image {
+    display: inline-block;
+    vertical-align: top;
+    width: 64px;
+    height: 64px;
+}
+ol.chart li div.image img {
+    max-width: 64px;
+    max-height: 64px;
+}
+ol.chart li div.description {
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px 16px;
+    width: 100px;
+    height: 48px;
+}
+ol.chart li div.title {
+    font-size: 1.2em;
+}
+ol.chart li div.artist {
+    color: #888888;
+}
+
+div#thisweek {
+	display: inline-block;
+	vertical-align: top;
+	width: 464px;
+	padding: 8px;
+}
+div#nextweek {
+	display: inline-block;
+	vertical-align: top;
+	width: 464px;
+	padding: 8px;
+}
+
 div#player {
     margin: 0 auto;
     padding: 0px;
