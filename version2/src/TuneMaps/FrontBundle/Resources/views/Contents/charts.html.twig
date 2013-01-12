@@ -1,18 +1,26 @@
 {% spaceless %}
+<div id="chart">
 <div id="thisweek">
 <h2>This week's chart</h2>
-<ul>
+<ol class="chart">
 {% for song in thisweek %}
-<li><span class="rank">{{ loop.index }}</span><span class="title">song.title</span> <span class="artist">song.artist</span></li>
+<li class="song">
+<div class="image"><img src="{% if song.image|length > 0 %}{{ song.image }}{% else %}{{ asset('bundles/tunemapsfront/images/empty-64x64.png') }}{% endif %}" alt="" /></div>
+<div class="description"><div class="title">{{ song.title }}</div><div class="artist">{{ song.artist.name }}</div></div>
+</li>
 {% endfor %}
-</ul>
+</ol>
 </div>
 <div id="nextweek">
 <h2>Next week's predicted chart</h2>
-<ul>
+<ol class="chart">
 {% for song in nextweek %}
-<li><span class="rank">{{ loop.index }}</span><span class="title">song.title</span> <span class="artist">song.artist</span></li>
+<li class="song">
+<div class="image"><img src="{% if song.image|length > 0 %}{{ song.image }}{% else %}{{ asset('bundles/tunemapsfront/images/empty-64x64.png') }}{% endif %}" alt="" /></div>
+<div class="description"><div class="title">{{ song.title }}</div><div class="artist">{{ song.artist.name }}</div></div>
+</li>
 {% endfor %}
-</ul>
+</ol>
+</div>
 </div>
 {% endspaceless %}
