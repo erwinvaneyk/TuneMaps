@@ -84,12 +84,12 @@ class PlayerController extends Controller
             $playcount = new ArtistPlayed($user,$artist);
         } else {
             // check if the song wasn't played 1 min ago
-            if(($playcount->getLastPlayed()->getTimestamp() - time()) > 60)
+            if((time() - $playcount->getLastPlayed()->getTimestamp()) > 60)
                 $playcount->incTimesPlayed();
         }
         
         // save new playcount
-        $em->merge($playcount);
+        $em->persist($playcount);
         $em->flush();
         
         return true;
