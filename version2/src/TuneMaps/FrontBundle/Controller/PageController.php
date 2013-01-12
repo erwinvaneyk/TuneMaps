@@ -68,14 +68,14 @@ class PageController extends Controller
 			}
 			
 			//total sum of playcounts for this event
-			$event->rank = $sumPlaycount;
+			$event->setRank($sumPlaycount);
 		}
 		
 		//sort events on rank/playcount
-		usort($events, function($a, $b){  return $a->rank < $b->rank; });
+		usort($events, function($a, $b){  return $a->getRank() < $b->getRank(); });
 		
 		//limit to a list of 10 events
-		$events = array_slice($events, 10);
+		$events = array_slice($events, 0, 10);
 		
         return array('events' => $events);
     }
