@@ -241,6 +241,17 @@ div#map {
     width: 698px;
     height: 320px;
 }
+
+.artistname{
+	color: #5CA0D1;
+	cursor: pointer;
+}
+
+.artistname:hover{
+	color: #5CA0D1;
+	text-decoration: underline;
+	cursor: pointer;
+}
 ul#searchresults {
     list-style: none;
     margin: 0px;
@@ -342,11 +353,15 @@ ol.chart li div.description {
     display: inline-block;
     vertical-align: top;
     padding: 8px 16px;
-    width: 100px;
+    width: 350px;
     height: 48px;
 }
 ol.chart li div.title {
     font-size: 1.2em;
+	width: 350px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.2em;
 }
 ol.chart li div.artist {
     color: #888888;

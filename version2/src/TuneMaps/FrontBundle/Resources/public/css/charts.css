@@ -26,11 +26,15 @@ ol.chart li div.description {
     display: inline-block;
     vertical-align: top;
     padding: 8px 16px;
-    width: 100px;
+    width: 350px;
     height: 48px;
 }
 ol.chart li div.title {
     font-size: 1.2em;
+	width: 350px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.3em;
 }
 ol.chart li div.artist {
     color: #888888;
