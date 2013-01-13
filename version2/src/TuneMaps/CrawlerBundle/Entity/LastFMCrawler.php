@@ -335,6 +335,46 @@ class LastFMCrawler extends Crawler {
 		return $songs;
 		
 	}
+        
+            // returns playcount of the artist (without user!) and the artist
+        public function getTopArtists($user, $period='overall', $page=1, $limit=50) {
+            $url = $this->getUrl('user.getTopArtists', $args);
+            $json = json_decode($this->getExternalContents($url));
+
+            // check if it is a valid result
+            if(!empty($json->{'error'}) || !empty($json->{'topartist'}->{'artist'})) {
+                return false;
+            } 
+
+            // build array with artistPlayed objects
+            $json = $json->{'topartist'};
+            $artists = array();
+            foreach($json as $artist) {
+                $artist = new Artist();
+                $artist->setId($artist->{'mbid'});
+                $artist->setName($artist->{'name'});
+                $artistplayed = new ArtistPlayed();
+                $artistplayed->setTimesPlayed($artist->{'count'});
+                $artistplayed->setArtist($artist);
+                $artists[] = $artistplayed;
+            }
+
+            return $artists;
+        }
+
+        //get users by name (partial). Max 20 users
+        public function getUsers($username, $page = 1) {
+            $url = 'http://www.last.fm/community/users/search?q=' . urlencode($username) . '&page=' . $page;
+            $html = $this->getExternalContents($url);
+            /*preg_match_all("/<\/span> .+<\/a><\/strong>/",$rawContents,$users);
+            $users = preg_replace("/<\/span> (.+)<\/a><\/strong>/", "$1",$users[0]);*/
+            $containers = explode('<div class="userContainer">',$html);
+            if(preg_match("/lastTrack/",$containers)) {
+
+            }
+
+            return $users; //array(string}
+        }
 	
 	/**
 	 * Gets the latest chart songs for a specific metro
