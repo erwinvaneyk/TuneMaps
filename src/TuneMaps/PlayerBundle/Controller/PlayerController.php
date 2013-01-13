@@ -32,9 +32,10 @@ class PlayerController extends Controller
 		$song = $this->getSongFromDatabase($artist_name, $tracktitle);
 		if($song == null) {
 			$song = $this->getSongFromLastFM($artist_name, $tracktitle);
-			$em->persist($song->getArtist());
-			$em->persist($song);
-			$em->flush();
+			$song->setArtist($this->storeArtistIfNotExists($song->getArtist(), $em));
+			//$em->persist($song->getArtist());
+			//$em->persist($song);
+			//$em->flush();
 		}
 		
 		// Song found, get the youtube URI and store the song object
@@ -133,6 +134,25 @@ class PlayerController extends Controller
 		$lastFmCrawler = new LastFMCrawler();
 		$song = $lastFmCrawler->trackInformation($artist, $title);
 		return $song;
+	}
+	
+	/**
+	 * Stores the artist in the database if it not yet exists
+	 * 
+	 * @param Artist $artist The artist
+	 * @return Artist the stored artist
+	 */
+	protected function storeArtistIfNotExists($artist, $em) {
+		$artist2 = $em->getRepository('TuneMaps\MusicDataBundle\Entity\Artist')->findOneBy(array('id' => $artist->getId()));
+		
+		if($artist2 == null) {
+			$em->persist($artist);
+			$em->flush();
+		} else {
+			$artist = $artist2;
+		}
+		
+		return $artist;
 	}
     
 }
