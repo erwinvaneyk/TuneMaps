@@ -81,7 +81,7 @@ All the chart prediction software is contained in the following folder in the gi
 Running this software requires 2 steps:
 
 ### Crawling new data
-Run the java crawler application:
+You have to run the java crawler application to get new chart data from Last.FM. This program obtains the latest information first and continues to crawl historic data. You can turn it off at any point and the progress will have been saved in the CSV data files. You can run the program as following:
 ```
 java -jar ./chartprediction/TuneMapsChartCrawler.jar
 ```
