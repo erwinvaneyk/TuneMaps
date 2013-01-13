@@ -59,8 +59,14 @@ php app/console assetic:dump
 php app/console assetic:dump --env=prod
 ```
 
+### Registring users
+The system requires users to login. Since the system is initially empty you will have to register a user. To do this go to the following URL:
+```
+http://[server URL]/TuneMaps/web/app.php/register
+```
+
 ### Done
-You can now use the application by visiting
+You can now use the application by logging in at the following URL
 ```
 http://[server URL]/TuneMaps/web/app.php/
 ```
