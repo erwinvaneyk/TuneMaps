@@ -20,10 +20,12 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new TuneMaps\FrontBundle\TuneMapsFrontBundle(),
+            new TuneMaps\SearchBundle\TuneMapsSearchBundle(),
+            new TuneMaps\CrawlerBundle\TuneMapsCrawlerBundle(),
+            new TuneMaps\PlayerBundle\TuneMapsPlayerBundle(),
+            new TuneMaps\MusicDataBundle\TuneMapsMusicDataBundle(),
 			new FOS\UserBundle\FOSUserBundle(),
-			new TuneMaps\UserBundle\TuneMapsUserBundle(),
-			new TuneMaps\ServiceBundle\TuneMapsServiceBundle(),
-			new TuneMaps\RecommendationBundle\TuneMapsRecommendationBundle(),
+            new TuneMaps\UserBundle\TuneMapsUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

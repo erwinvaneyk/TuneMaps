@@ -5,19 +5,31 @@
     <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
 {% endif %}
 
-<form action="{{ path("fos_user_security_check") }}" method="post">
+<div id="logo">
+	<img src="../bundles/tunemapsuser/images/logo-big.png" alt="logo" />
+</div>
+
+<form action="{{ path("fos_user_security_check") }}" method="post" id="form">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
+    <div>
     <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
     <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
+    </div>
+    
+    <div>
     <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="password" id="password" name="_password" required="required" /><br />
-
-    <label for="remember_me" class="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-
-	<label for="_submit"></label>
+    <input type="password" id="password" name="_password" required="required" />
+    </div>
+    
+    <div>
+    <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="checkbox" id="remember_me" class="remember_me" name="_remember_me" value="on" />
+    </div>
+    
+    <div>
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+    </div>
+    
 </form>
 {% endblock fos_user_content %}

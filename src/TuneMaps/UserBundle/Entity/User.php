@@ -3,12 +3,12 @@
 namespace TuneMaps\UserBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
-use TuneMaps\RecommendationBundle\Entity\Location;
+use TuneMaps\MusicDataBundle\Entity\Location;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tunemaps_user")
+ * @ORM\Table(name="user")
  */
 class User extends BaseUser
 {
@@ -20,67 +20,55 @@ class User extends BaseUser
     protected $id;
 
     /**
-    * @ORM\OneToOne(targetEntity="\TuneMaps\RecommendationBundle\Entity\Location")
+    * @ORM\OneToOne(targetEntity="\TuneMaps\MusicDataBundle\Entity\Location", cascade={"all"}) 
+     * 
     */
     protected $lastLocation;
     
     /**
-     * @ORM\Column(type="integer")
+     * Creates a user
      */
-    protected $age;
-    
-    /**
-     * @ORM\Column(type="string", length=1) 
-     */
-    protected $gender;
-    
-    /**
-     * @ORM\column(type="integer")
-     */
-    protected $playcount = 0;
-    
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
+		$this->lastLocation = new Location();
+		$this->lastLocation->setLatitude(0);
+		$this->lastLocation->setLongitude(0);
     }
     
-    public function getGender() {
-        return $this->gender;
+    /**
+     * Gets the id
+     * 
+     * @return int The id
+     */
+    public function getId() {
+        return $this->id;
     }
     
+    /**
+     * Sets the id
+     * 
+     * @param int $id The id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+    
+    /**
+     * Gets the last location
+     * 
+     * @return Location The last location
+     */
     public function getLastLocation() {
         return $this->lastLocation;
     }
     
-    public function getPlayCount() {
-        return $this->playcount;
+    /**
+     * Sets the last location
+     * 
+     * @param Location $lastLocation The last location
+     */
+    public function setLastLocation($lastLocation) {
+        $this->lastLocation = $lastLocation;
     }
     
-    public function getAge() {
-        return $this->age;
-    }
-    
-    public function setGender($gender) {
-        if($gender != 'm' && $gender != 'f' && $gender != 'n')
-            throw new \Exception('Invalid gender provided! ');
-        else
-            $this->gender = $gender;
-    }
-    
-    public function setAge($age) {
-        $this->age = $age;
-    }
-    
-    public function setLocation(Location $loc) {
-        $this->lastLocation = $loc;
-    }
-    
-    public function setPlayCount($count) {
-        if($count < 0) $count = 0;
-        $this->playcount = $count;
-    }
-    
-    public function incPlayCount($add = 1) {
-        $this->playcount += $add;
-    }
 }

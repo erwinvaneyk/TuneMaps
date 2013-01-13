@@ -14,7 +14,8 @@ framework:
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
-    trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    trust_proxy_headers: false # Deprecated in 2.0; will be removed in 2.3 (used trusted_proxies instead)
+    trusted_proxies: ~
     session:         ~
 
 # Twig Configuration
@@ -26,7 +27,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ "TuneMapsFrontBundle", "TuneMapsUserBundle", "FOSUserBundle" ]
+    bundles:        [TuneMapsFrontBundle, TuneMapsUserBundle, FOSUserBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -58,8 +59,8 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# app/config/config.yml
+# FOS User Bundle Configuration
 fos_user:
     db_driver: orm
-    firewall_name: home
+    firewall_name: main
     user_class: TuneMaps\UserBundle\Entity\User

@@ -1,14 +1,13 @@
 {% extends 'TuneMapsFrontBundle::base.html.twig' %}
-{% block stylesheets %}
-{{ parent() }}
-<link href="{{ asset('bundles/tunemapsfront/css/start.css') }}" rel="stylesheet" type="text/css" />
+{% block css %}
+{% stylesheets
+    'bundles/tunemapsuser/css/login.css'
+    output='css/compiled-login.css'
+    filter='cssrewrite' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+{% endstylesheets %}
 {% endblock %}
-{% block body %}
 
-<div id="logo">
-	<img src="{{ asset('bundles/tunemapsfront/images/logo-big.png') }}" alt="TuneMaps" />
-</div>
-<div id="form">
+{% block body %}
 {{ block('fos_user_content') }}
-</div>
 {% endblock %}
