@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use TuneMaps\CrawlerBundle\Entity\LastFMCrawler;
 use TuneMaps\CrawlerBundle\Entity\EventRecommender;
 use TuneMaps\MusicDataBundle\Entity\Event;
+use TuneMaps\MusicDataBundle\Entity\Metro;
+use TuneMaps\MusicDataBundle\Entity\Location;
 
 class PageController extends Controller
 {
@@ -87,9 +89,14 @@ class PageController extends Controller
     public function chartsAction()
     {
         
+		
+		// Get the logged in user
+		$user = $this->get('security.context')->getToken()->getUser();
+		$m = $this->getNearestMetro($user->getLastLocation());
+		
 		// Find the metro
-		$country = 'United States';
-		$metro = 'Austin';
+		$country = $m['country'];
+		$metro = $m['metro'];
 		
 		// Get the most recent chart
 		$lastFmCrawler = new LastFmCrawler();
@@ -122,4 +129,41 @@ class PageController extends Controller
 		// Return the arrays to the template
         return array('thisweek' => $thisweek, 'nextweek' => $nextweek);
     }
+	
+	private function getNearestMetro($location) {
+	
+		// Default to netherlands
+		$country = 'Netherlands';
+		$metro = 'Amsterdam';
+		$smallestDist = 100000;
+	
+		// Open latitude longitudes of metros
+		$file = __DIR__ . '/../../../../chartprediction/latlons.csv';
+		if(file_exists($file)) {
+			$fileHandle = fopen($file, 'r');
+			if($fileHandle !== false) {
+				$latlons = fgetcsv($fileHandle);
+				while($latlons != '') {
+					$lat1 = $latlons[2];
+					$lng1 = $latlons[3];
+					$lat2 = $location->getLatitude();
+					$lng2 = $location->getLongitude();
+					
+					// Calculate distance
+					$theta = $lng1 - $lng2;
+					$dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+					$dist = acos($dist);
+					$dist = rad2deg($dist);
+					if($dist < $smallestDist) {
+						$smallestDist = $dist;
+						$country = $latlons[1];
+						$metro = $latlons[0];
+					}
+					$latlons = fgetcsv($fileHandle);
+				}
+			}
+		}
+	
+		return array('country' => $country, 'metro' => $metro);
+	}
 }

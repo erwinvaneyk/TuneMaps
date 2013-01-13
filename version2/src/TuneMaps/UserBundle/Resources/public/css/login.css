@@ -5,6 +5,7 @@ body{
 	background: url('../images/festival_bg.jpg') no-repeat;
 	background-size: 100%;
 	margin: 0;
+	color: #fff;
 }
 
 #logo{
@@ -65,7 +66,6 @@ body{
 	bottom: 150px;
 	position: absolute;
 }
-
 #login:hover{
 	cursor: pointer;
 	background: #e5e5e5; /* Old browsers */
@@ -95,6 +95,7 @@ body{
 
 #form{
 	background: #fff;
+	color: #333;
 	width: 350px;
 	margin-left: 130px;
 	border-radius: 5px;

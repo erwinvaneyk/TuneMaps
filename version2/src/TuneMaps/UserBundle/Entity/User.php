@@ -30,6 +30,9 @@ class User extends BaseUser
      */
     public function __construct() {
         parent::__construct();
+		$this->lastLocation = new Location();
+		$this->lastLocation->setLatitude(0);
+		$this->lastLocation->setLongitude(0);
     }
     
     /**
