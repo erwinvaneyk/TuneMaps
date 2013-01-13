@@ -87,17 +87,39 @@ class PageController extends Controller
     public function chartsAction()
     {
         
-		$lastFmCrawler = new LastFmCrawler();
-		$chart = $lastFmCrawler->getChart('Netherlands', 'Amsterdam', 1356868800);
-		$predictedIndices = array(12, 9, 6, 11, 7, 3, 10, 13, 5, 8);
+		// Find the metro
+		$country = 'United States';
+		$metro = 'Austin';
 		
+		// Get the most recent chart
+		$lastFmCrawler = new LastFmCrawler();
+		$chart = $lastFmCrawler->getLatestChart($country, $metro);
+		
+		
+		// Default prediction file if no prediction could be found
+		$predictedIndices = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		
+		// Open predicted indices
+		$file = __DIR__ . '/../../../../chartprediction/data/' . $metro . '.predict.csv';
+		if(file_exists($file)) {
+			$fileHandle = fopen($file, 'r');
+			if($fileHandle !== false) {
+				$prediction = fgetcsv($fileHandle);
+				if(is_array($prediction) && count($prediction) == 10) {
+					$predictedIndices = $prediction;
+				}
+			}
+		}
+		
+		// Build arrays of songs based on predicted indices
 		$thisweek = array();
 		$nextweek = array();
 		for($i = 0; $i<10; $i++) {
 			$thisweek[] = $chart[$i];
-			$nextweek[] = $chart[$predictedIndices[$i]];
+			$nextweek[] = $chart[$predictedIndices[$i]-1];
 		}
 		
+		// Return the arrays to the template
         return array('thisweek' => $thisweek, 'nextweek' => $nextweek);
     }
 }

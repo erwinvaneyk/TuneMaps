@@ -335,5 +335,31 @@ class LastFMCrawler extends Crawler {
 		return $songs;
 		
 	}
+	
+	/**
+	 * Gets the latest chart songs for a specific metro
+	 * 
+	 * @param string $country The country
+	 * @param string $metro The metro
+	 * 
+	 * @return array The chart
+	 */
+	public function getLatestChart($country, $metro) {
+		
+		// Create the API url
+        $url = $this->getUrl('geo.getmetroweeklychartlist', array());
+		
+		// Get the JSON response
+        $json = json_decode($this->getExternalContents($url));
+		
+		// Get the latest week
+		$weeks = $json->{'weeklychartlist'}->{'chart'};
+		$week = $weeks[count($weeks)-1];
+		$week = $week->{'from'};
+		
+		// Get and return the chart for that week
+		return $this->getChart($country, $metro, $week);
+		
+	}
     
 }

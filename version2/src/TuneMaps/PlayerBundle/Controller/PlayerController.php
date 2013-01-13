@@ -23,6 +23,8 @@ class PlayerController extends Controller
      */
     function youtubeCodeAction($artist_name, $tracktitle) {
 	
+		$em = $this->getDoctrine()->getEntityManager();
+		
 		// Initialize empty value
 		$json = array('artist' => $artist_name, 'title' => $tracktitle, 'youtube' => '');
 	
@@ -30,6 +32,9 @@ class PlayerController extends Controller
 		$song = $this->getSongFromDatabase($artist_name, $tracktitle);
 		if($song == null) {
 			$song = $this->getSongFromLastFM($artist_name, $tracktitle);
+			$em->persist($song->getArtist());
+			$em->persist($song);
+			$em->flush();
 		}
 		
 		// Song found, get the youtube URI and store the song object
@@ -48,14 +53,13 @@ class PlayerController extends Controller
 			$json['youtube'] = $song->getYoutube();
 			
 			// Store the objects in the database
-			$em = $this->getDoctrine()->getEntityManager();
 			$em->merge($song->getArtist());
 			$em->merge($song);
 			$em->flush();
 			
 			// If there is a youtube link, increment the playcount
 			if(strlen($song->getYoutube()) > 0) {
-				$this->incrementPlayCount($song->getArtist());
+				$this->incrementPlayCount($song->getArtist(), $em);
 			}
 			
 		}
@@ -70,13 +74,12 @@ class PlayerController extends Controller
 	 * 
 	 * @param Artist $artist The artist
 	 */
-	public function incrementPlayCount($artist) {
+	public function incrementPlayCount($artist, $em) {
 	
 		// Get the logged in user
 		$user = $this->get('security.context')->getToken()->getUser();
 		
 		// Get the current play count for given artist
-		$em = $this->getDoctrine()->getEntityManager();
 		$playcount = $em->getRepository('TuneMaps\MusicDataBundle\Entity\ArtistPlayed')->findOneBy(array('user' => $user, 'artist' => $artist));
 		
 		// Check if a playcount exists
@@ -84,6 +87,7 @@ class PlayerController extends Controller
 			
 			// If there is no play count for this artist yet, create it
 			$playcount = new ArtistPlayed($user, $artist);
+			$em->persist($playcount);
 			
 		} else {
 		
@@ -91,11 +95,11 @@ class PlayerController extends Controller
 			if((time() - $playcount->getLastPlayed()->getTimestamp()) > 60) {
 				$playcount->incTimesPlayed();
 			}
+			$em->merge($playcount);
 			
 		}
 		
 		// Store the playcount
-		$em->merge($playcount);
 		$em->flush();
 		
 	}
